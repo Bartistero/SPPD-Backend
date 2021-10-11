@@ -265,38 +265,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `SPPD`.`Osoba_has_Wiadomosci`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `SPPD`.`Osoba_has_Wiadomosci` ;
-
-CREATE TABLE IF NOT EXISTS `SPPD`.`Osoba_has_Wiadomosci` (
-  `Osoba_idOsoba` INT NOT NULL,
-  `idNadawca` INT NOT NULL,
-  `idOdbiorca` INT NOT NULL,
-  PRIMARY KEY (`Osoba_idOsoba`),
-  INDEX `fk_Osoba_has_Wiadomosci_Osoba1_idx` (`Osoba_idOsoba` ASC) VISIBLE,
-  CONSTRAINT `fk_Osoba_has_Wiadomosci_Osoba1`
-    FOREIGN KEY (`Osoba_idOsoba`)
-    REFERENCES `SPPD`.`Person` (`idPerson`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `SPPD`.`tematZaproponowany`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `SPPD`.`tematZaproponowany` ;
-
-CREATE TABLE IF NOT EXISTS `SPPD`.`tematZaproponowany` (
-  `idtematZaproponowany` INT NOT NULL AUTO_INCREMENT,
-  `tematZaproponowanycol` VARCHAR(45) NULL,
-  PRIMARY KEY (`idtematZaproponowany`),
-  UNIQUE INDEX `idtematZaproponowany_UNIQUE` (`idtematZaproponowany` ASC) VISIBLE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `SPPD`.`Person_has_ThesisTitle`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `SPPD`.`Person_has_ThesisTitle` ;

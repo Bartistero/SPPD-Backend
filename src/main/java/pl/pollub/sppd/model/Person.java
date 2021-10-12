@@ -8,13 +8,12 @@ import pl.pollub.sppd.model.accountStatus.AccountStatusConverter;
 import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.permission.PermissionConverter;
 
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
+@Table(name = "Person")
 @NoArgsConstructor
 public class Person {
 
@@ -30,9 +29,11 @@ public class Person {
     private String pesel;
     private String phone;
 
+    @Column(name = "idAccountStatus")
     @Convert(converter = AccountStatusConverter.class)
     private AccountStatus accountStatus;
 
+    @Column(name = "idPermissions")
     @Convert(converter = PermissionConverter.class)
     private Permission permission;
 

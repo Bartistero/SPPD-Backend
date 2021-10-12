@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum AccountStatus {
-    ACTIVE(0L),
-    DISABLE(1L),
-    SUSPENDED(2L);
+    ACTIVE(1L),
+    DISABLE(2L),
+    SUSPENDED(3L);
 
     private Long number ;
 

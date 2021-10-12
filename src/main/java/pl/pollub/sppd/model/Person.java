@@ -3,8 +3,14 @@ package pl.pollub.sppd.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.pollub.sppd.model.accountStatus.AccountStatus;
+import pl.pollub.sppd.model.accountStatus.AccountStatusConverter;
+import pl.pollub.sppd.model.permission.Permission;
+import pl.pollub.sppd.model.permission.PermissionConverter;
 
-import javax.persistence.*;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 @Getter
@@ -20,10 +26,16 @@ public class Person {
     private String login;
     private String email;
     private String password;
-    private String albumNumber; 
-    private String pesel; 
+    private String albumNumber;
+    private String pesel;
     private String phone;
-    //klucze obce
+
+    @Convert(converter = AccountStatusConverter.class)
+    private AccountStatus accountStatus;
+
+    @Convert(converter = PermissionConverter.class)
+    private Permission permission;
+
     private String houseNumber;
     private String flatNumber;
 

@@ -25,6 +25,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Person person = personRepository.findPersonByLogin(username);
+        if (person == null) {
+            throw new UsernameNotFoundException("Could not find user");
+        }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(person.getPermission().toString()));
         return new User(person.getLogin(), person.getPassword(), grantedAuthorities);

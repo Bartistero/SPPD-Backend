@@ -8,7 +8,7 @@ import pl.pollub.sppd.security.LoginCredentials;
 @RestController
 public class LoginController {
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public void login(@RequestBody LoginCredentials credentials){
     }
 }

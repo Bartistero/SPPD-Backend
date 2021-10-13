@@ -9,7 +9,7 @@ public class SppdApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SppdApplication.class, args);
-		//System.out.println("hasło bxcyrpt   " + new BCryptPasswordEncoder().encode("zaq1@WSX"));
+		System.out.println("hasło bxcyrpt   " + new BCryptPasswordEncoder().encode("zaq1@WSX"));
 	}
 
 }

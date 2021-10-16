@@ -8,9 +8,9 @@ public enum AccountStatus {
     DISABLE(2L),
     SUSPENDED(3L);
 
-    private Long number ;
+    private Long number;
 
-    private AccountStatus(Long number){
+    private AccountStatus(Long number) {
         this.number = number;
     }
 }

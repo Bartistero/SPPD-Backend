@@ -13,11 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/address")
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class AddressController {
 
-    @Autowired
-    private AddressService addressService;
+    private final AddressService addressService;
 
     @GetMapping("/Voivodeship")
     public List<VoivodeshipDto> get() {

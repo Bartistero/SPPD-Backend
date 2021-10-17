@@ -13,8 +13,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AddressService {
 
-    @Autowired
-    private VoivodeshipRepository repository;
+    private final VoivodeshipRepository repository;
 
     public List<VoivodeshipDto> getVoivodeship(){
         List<Voivodeship> voivodeshipList = repository.findAll();

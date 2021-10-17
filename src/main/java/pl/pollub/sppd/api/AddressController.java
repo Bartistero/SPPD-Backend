@@ -1,15 +1,10 @@
 package pl.pollub.sppd.api;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pl.pollub.sppd.service.address.AddressService;
-import pl.pollub.sppd.service.address.VoivodeshipDto;
+import org.springframework.web.bind.annotation.*;
+import pl.pollub.sppd.service.address.*;
 
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/address")
@@ -18,8 +13,23 @@ public class AddressController {
 
     private final AddressService addressService;
 
-    @GetMapping("/Voivodeship")
+    @GetMapping("/voivodeship")
     public List<VoivodeshipDto> get() {
         return addressService.getVoivodeship();
+    }
+
+    @GetMapping("/count/{id}")
+    public List<CountyDto> getCounty( @PathVariable Long id) throws AddressNotFoundException {
+        return addressService.getCounty(id);
+    }
+
+    @GetMapping("/borough/{id}")
+    public List<BoroughDto> getBorough(@PathVariable Long id) throws AddressNotFoundException {
+        return addressService.getBorough(id);
+    }
+
+    @GetMapping("/city/{id}")
+    public List<CityDto> getCity(@PathVariable Long id) throws AddressNotFoundException {
+        return addressService.getCity(id);
     }
 }

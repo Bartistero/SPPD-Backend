@@ -20,7 +20,7 @@ public class Borough extends IdModel {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "borough")
     Set<City> city;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idCounty", nullable = false)
     private County county;
 }

@@ -15,10 +15,8 @@ import javax.persistence.*;
 @Setter
 @Table(name = "Person")
 @NoArgsConstructor
-public class Person {
+public class Person extends IdModel{
 
-    @Id
-    private long idPerson;
     private String name;
     private String middleName;
     private String surname;
@@ -36,6 +34,7 @@ public class Person {
     @Column(name = "idPermissions")
     @Convert(converter = PermissionConverter.class)
     private Permission permission;
+
 
     private String houseNumber;
     private String flatNumber;

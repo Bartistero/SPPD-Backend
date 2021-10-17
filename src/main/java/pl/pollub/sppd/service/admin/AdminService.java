@@ -1,14 +1,10 @@
-package pl.pollub.sppd.service;
+package pl.pollub.sppd.service.admin;
 
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
-import org.hibernate.annotations.NotFound;
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.model.Person;
 import pl.pollub.sppd.model.repository.PersonRepository;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

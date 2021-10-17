@@ -1,8 +1,7 @@
-package pl.pollub.sppd.service;
+package pl.pollub.sppd.service.admin;
 
 import lombok.Getter;
 import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
 import pl.pollub.sppd.model.Person;
 import pl.pollub.sppd.model.accountStatus.AccountStatus;
 import pl.pollub.sppd.model.permission.Permission;

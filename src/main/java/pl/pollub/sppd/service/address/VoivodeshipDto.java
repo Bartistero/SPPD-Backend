@@ -9,7 +9,7 @@ import pl.pollub.sppd.model.address.Voivodeship;
 @Getter
 @Setter
 @NoArgsConstructor
-public class VoivodeshipDto extends Address {
+public class VoivodeshipDto extends AddressDto {
 
     public static VoivodeshipDto voivodeshipToVoivodeshipDto(Voivodeship voivodeship) {
         VoivodeshipDto voivodeshipDto = new VoivodeshipDto();

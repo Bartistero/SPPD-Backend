@@ -5,7 +5,7 @@ import org.springframework.beans.BeanUtils;
 import pl.pollub.sppd.model.address.City;
 
 @Getter
-public class CityDto extends Address{
+public class CityDto extends AddressDto {
 
     public static CityDto boroughToBoroughDto(City city) {
         CityDto cityDto = new CityDto();

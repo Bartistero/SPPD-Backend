@@ -10,6 +10,8 @@ import pl.pollub.sppd.service.address.AddressNotFoundException;
 @ControllerAdvice
 public class ApiCatchException{
 
+
+    //Poprawaić na JSON'a
     @ExceptionHandler(AddressNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> handleNoSuchElementFoundException(AddressNotFoundException exception){

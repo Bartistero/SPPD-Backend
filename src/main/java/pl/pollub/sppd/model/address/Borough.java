@@ -3,6 +3,7 @@ package pl.pollub.sppd.model.address;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import pl.pollub.sppd.model.IdModel;
+import pl.pollub.sppd.model.Person;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -18,9 +19,15 @@ public class Borough extends IdModel {
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "borough")
-    Set<City> city;
+    private Set<City> city;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "borough")
+    private Set<Street> street;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idCounty", nullable = false)
     private County county;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "borough")
+    private Set<Person> person;
 }

@@ -6,4 +6,6 @@ import pl.pollub.sppd.model.Person;
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
     Person findPersonByLogin(String login);
+    Person findPersonByEmail(String Email);
+    Person findPersonByPesel(String pesel);
 }

@@ -1,13 +1,9 @@
 package pl.pollub.sppd.service.address;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import pl.pollub.sppd.model.address.Voivodeship;
 
-@Getter
-@Setter
 @NoArgsConstructor
 public class VoivodeshipDto extends AddressDto {
 
@@ -15,5 +11,11 @@ public class VoivodeshipDto extends AddressDto {
         VoivodeshipDto voivodeshipDto = new VoivodeshipDto();
         BeanUtils.copyProperties(voivodeship, voivodeshipDto, "voivodeshipCode");
         return voivodeshipDto;
+    }
+
+    public static Voivodeship voivodeshipDtoToVoivodeship(VoivodeshipDto voivodeshipDto) {
+        Voivodeship voivodeship = new Voivodeship();
+        voivodeship.setId(voivodeshipDto.getId());
+        return voivodeship;
     }
 }

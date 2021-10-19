@@ -10,6 +10,7 @@ import pl.pollub.sppd.service.admin.AdminDto;
 import pl.pollub.sppd.service.admin.AdminService;
 import pl.pollub.sppd.service.GeneralException;
 
+import javax.mail.MessagingException;
 import java.util.Collection;
 
 @RestController
@@ -20,7 +21,7 @@ public class AdminApi {
     private final AdminService adminService;
 
     @PostMapping
-    public AdminDto add(AdminDto adminDto) throws GeneralException {
+    public AdminDto add(AdminDto adminDto) throws GeneralException, MessagingException {
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         return adminService.add(adminDto, authorities.iterator().next().toString());
     }

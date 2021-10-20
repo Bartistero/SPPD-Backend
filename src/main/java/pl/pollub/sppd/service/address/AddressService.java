@@ -9,7 +9,7 @@ import pl.pollub.sppd.model.address.Voivodeship;
 import pl.pollub.sppd.model.repository.BoroughRepository;
 import pl.pollub.sppd.model.repository.CountyRepository;
 import pl.pollub.sppd.model.repository.VoivodeshipRepository;
-import pl.pollub.sppd.service.GeneralException;
+import pl.pollub.sppd.service.exceptions.NotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,25 +29,25 @@ public class AddressService {
                 .collect(Collectors.toList());
     }
 
-    public List<CountyDto> getCounty(Long id) throws GeneralException {
+    public List<CountyDto> getCounty(Long id) throws NotFoundException {
         Voivodeship voivodeship = voivodeshipRepository.findVoivodeshipById(id).orElseThrow(
-                () -> new GeneralException("voivodeship with id: " + id + " not found!"));
+                () -> new NotFoundException("voivodeship with id: " + id + " not found!"));
         return voivodeship.getCounty().stream()
                 .map(CountyDto::countyToCountyDto)
                 .collect(Collectors.toList());
     }
 
-    public List<BoroughDto> getBorough(Long id) throws GeneralException {
+    public List<BoroughDto> getBorough(Long id) throws NotFoundException {
         County county = countyRepository.findCountyById(id).orElseThrow(
-                () -> new GeneralException("County with id: " + id + " not found!"));
+                () -> new NotFoundException("County with id: " + id + " not found!"));
         return county.getBorough().stream()
                 .map(BoroughDto::boroughToBoroughDto)
                 .collect(Collectors.toList());
     }
 
-    public List<CityDto> getCity(Long id) throws GeneralException {
+    public List<CityDto> getCity(Long id) throws NotFoundException {
         Borough borough = boroughRepository.findBoroughById(id).orElseThrow(
-                () -> new GeneralException("County with id: " + id + " not found!"));
+                () -> new NotFoundException("County with id: " + id + " not found!"));
         return borough.getCity().stream()
                 .map(CityDto::cityToCityDto)
                 .collect(Collectors.toList());

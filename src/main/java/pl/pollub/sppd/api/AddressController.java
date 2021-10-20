@@ -3,7 +3,8 @@ package pl.pollub.sppd.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.pollub.sppd.service.address.*;
-import pl.pollub.sppd.service.GeneralException;
+import pl.pollub.sppd.service.exceptions.GeneralException;
+import pl.pollub.sppd.service.exceptions.NotFoundException;
 
 import java.util.List;
 
@@ -20,17 +21,17 @@ public class AddressController {
     }
 
     @GetMapping("/count/{id}")
-    public List<CountyDto> getCounty(@PathVariable Long id) throws GeneralException {
+    public List<CountyDto> getCounty(@PathVariable Long id) throws NotFoundException {
         return addressService.getCounty(id);
     }
 
     @GetMapping("/borough/{id}")
-    public List<BoroughDto> getBorough(@PathVariable Long id) throws GeneralException {
+    public List<BoroughDto> getBorough(@PathVariable Long id) throws NotFoundException {
         return addressService.getBorough(id);
     }
 
     @GetMapping("/city/{id}")
-    public List<CityDto> getCity(@PathVariable Long id) throws GeneralException {
+    public List<CityDto> getCity(@PathVariable Long id) throws NotFoundException {
         return addressService.getCity(id);
     }
 }

@@ -3,17 +3,17 @@ package pl.pollub.sppd.service.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.mail.Mail;
-import pl.pollub.sppd.model.Person;
-import pl.pollub.sppd.model.accountStatus.AccountStatus;
 import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.repository.PersonRepository;
+import pl.pollub.sppd.service.CheckPermission;
 import pl.pollub.sppd.service.CheckPersonalData;
-import pl.pollub.sppd.service.GeneralException;
+import pl.pollub.sppd.service.exceptions.GeneralException;
 import pl.pollub.sppd.service.address.*;
+import pl.pollub.sppd.service.exceptions.PermissionException;
 
 import javax.mail.MessagingException;
-import javax.transaction.Transactional;
-import java.beans.Transient;
+import java.util.ArrayList;
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -22,16 +22,15 @@ public class AdminService {
     private final AddressVerification addressVerification;
     private final CheckPersonalData checkPersonalData;
     private final PersonRepository personRepository;
+    private final CheckPermission checkPermission;
     private final Mail mail;
 
-    public AdminDto add(AdminDto adminDto, String authorities) throws GeneralException, MessagingException {
-        if (authorities.equals(Permission.SUPER_ADMIN.toString())) {
+    public AdminDto add(AdminDto adminDto, Permission authorities) throws GeneralException, PermissionException {
+            checkPermission.checkPermission(Permission.SUPER_ADMIN, authorities);
             checkPersonalData.checkValidData(adminDto);
             checkAddress(adminDto);
             personRepository.save(AdminDto.AdminDtoToPerson(adminDto));
-        } else {
-            throw new GeneralException("User with " + authorities + " can not use this API!");
-        }
+
         return adminDto;
     }
 

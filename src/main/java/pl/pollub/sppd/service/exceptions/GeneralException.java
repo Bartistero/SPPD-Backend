@@ -1,4 +1,4 @@
-package pl.pollub.sppd.service;
+package pl.pollub.sppd.service.exceptions;
 
 import lombok.Getter;
 

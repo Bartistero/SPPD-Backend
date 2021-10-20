@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.pollub.sppd.model.repository.PersonRepository;
 import pl.pollub.sppd.service.admin.AdminDto;
+import pl.pollub.sppd.service.exceptions.GeneralException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,21 +20,30 @@ public class CheckPersonalData {
         List<String> errors = new ArrayList<>();
         if (admin.getName() == null) {
             errors.add("Field name can not be null");
-        } else if (admin.getSurname() == null) {
+        }
+
+        if (admin.getSurname() == null) {
             errors.add("Field surname can not be null");
-        } else if (admin.getLogin() == null) {
+        }
+
+        if (admin.getLogin() == null) {
             errors.add("Field login can not be null");
-        } else if (checkAvailabilityLogin(admin.getLogin())) {
+        }else if (checkAvailabilityLogin(admin.getLogin())) {
             errors.add("User with login = " + admin.getLogin() + " already exists");
-        } else if (admin.getEmail() == null) {
+        }
+
+        if (admin.getEmail() == null) {
             errors.add("Field email can not be null");
         } else if (checkAvailabilityEmail(admin.getEmail())) {
             errors.add("User with email = " + admin.getEmail() + " already exists");
-        } else if (admin.getPesel() == null) {
+        }
+
+        if (admin.getPesel() == null) {
             errors.add("Field PESEL can not be null");
-        } else if (validatePesel(admin.getPesel())) {
+        }else if (validatePesel(admin.getPesel())) {
             errors.add("Field PESEL must include 11 charts or user with this pesel already exists!");
-        } else if (admin.getHouseNumber() == null) {
+        }
+        if (admin.getHouseNumber() == null) {
             errors.add("Field House Number can not be null");
         }
 
@@ -42,26 +52,14 @@ public class CheckPersonalData {
     }
 
     private boolean checkAvailabilityLogin(String login) {
-        if (personRepository.findPersonByLogin(login) == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return personRepository.findPersonByLogin(login) != null;
     }
 
     private boolean checkAvailabilityEmail(String email) {
-        if (personRepository.findPersonByEmail(email) == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return personRepository.findPersonByEmail(email) != null;
     }
 
     private boolean validatePesel(String pesel) {
-        if (pesel.length() == 11 && personRepository.findPersonByPesel(pesel) != null) {
-            return true;
-        }else {
-            return false;
-        }
+        return pesel.length() == 11 && personRepository.findPersonByPesel(pesel) != null;
     }
 }

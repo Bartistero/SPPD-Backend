@@ -3,7 +3,7 @@ package pl.pollub.sppd.service.address;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.pollub.sppd.model.repository.*;
-import pl.pollub.sppd.service.GeneralException;
+import pl.pollub.sppd.service.exceptions.GeneralException;
 
 import java.util.ArrayList;
 import java.util.List;

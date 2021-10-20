@@ -8,7 +8,6 @@ import pl.pollub.sppd.model.Person;
 import javax.persistence.*;
 import java.util.Set;
 
-
 @Entity
 @Getter
 @RequiredArgsConstructor
@@ -20,9 +19,9 @@ public class City extends IdModel {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="idBorough", nullable=false)
+    @JoinColumn(name = "idBorough", nullable = false)
     private Borough borough;
 
-   @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
     private Set<Person> person;
 }

@@ -3,7 +3,6 @@ package pl.pollub.sppd.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.pollub.sppd.service.address.*;
-import pl.pollub.sppd.service.exceptions.GeneralException;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
 
 import java.util.List;
@@ -33,5 +32,10 @@ public class AddressController {
     @GetMapping("/city/{id}")
     public List<CityDto> getCity(@PathVariable Long id) throws NotFoundException {
         return addressService.getCity(id);
+    }
+
+    @GetMapping("/street/{id}")
+    public List<StreetDto> getStreet(@PathVariable Long id) throws NotFoundException {
+        return addressService.getStreet(id);
     }
 }

@@ -28,7 +28,7 @@ public class CheckPersonalData {
 
         if (admin.getLogin() == null) {
             errors.add("Field login can not be null");
-        }else if (checkAvailabilityLogin(admin.getLogin())) {
+        } else if (checkAvailabilityLogin(admin.getLogin())) {
             errors.add("User with login = " + admin.getLogin() + " already exists");
         }
 
@@ -40,7 +40,7 @@ public class CheckPersonalData {
 
         if (admin.getPesel() == null) {
             errors.add("Field PESEL can not be null");
-        }else if (validatePesel(admin.getPesel())) {
+        } else if (validatePesel(admin.getPesel())) {
             errors.add("Field PESEL must include 11 charts or user with this pesel already exists!");
         }
         if (admin.getHouseNumber() == null) {

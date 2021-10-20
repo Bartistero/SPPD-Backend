@@ -12,8 +12,6 @@ import pl.pollub.sppd.service.address.*;
 import pl.pollub.sppd.service.exceptions.PermissionException;
 
 import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -25,12 +23,12 @@ public class AdminService {
     private final CheckPermission checkPermission;
     private final Mail mail;
 
-    public AdminDto add(AdminDto adminDto, Permission authorities) throws GeneralException, PermissionException {
-            checkPermission.checkPermission(Permission.SUPER_ADMIN, authorities);
-            checkPersonalData.checkValidData(adminDto);
-            checkAddress(adminDto);
-            personRepository.save(AdminDto.AdminDtoToPerson(adminDto));
-
+    public AdminDto add(AdminDto adminDto, Permission authorities) throws GeneralException, PermissionException, MessagingException {
+        checkPermission.checkPermission(Permission.SUPER_ADMIN, authorities);
+        checkPersonalData.checkValidData(adminDto);
+        checkAddress(adminDto);
+        personRepository.save(AdminDto.AdminDtoToPerson(adminDto));
+        mail.sendMail("bartek114@autograf.pl", "aktywacja", "sfsdfsfdsf");
         return adminDto;
     }
 

@@ -1,6 +1,5 @@
 package pl.pollub.sppd.service.address;
 
-import lombok.Getter;
 import org.springframework.beans.BeanUtils;
 import pl.pollub.sppd.model.address.Borough;
 

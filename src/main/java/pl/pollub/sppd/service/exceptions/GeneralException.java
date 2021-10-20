@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class GeneralException extends Exception{
+public class GeneralException extends Exception {
 
     private List<String> messageList;
 

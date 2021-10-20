@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import pl.pollub.sppd.service.exceptions.AlreadyExistsException;
 import pl.pollub.sppd.service.exceptions.GeneralException;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
 import pl.pollub.sppd.service.exceptions.PermissionException;
@@ -24,7 +25,6 @@ public class ApiCatchException {
             error = new ErrorMessageList(HttpStatus.NOT_ACCEPTABLE.value(), new Date(), ex.getMessageList());
             return new ResponseEntity<ErrorMessageList>((ErrorMessageList) error, HttpStatus.NOT_ACCEPTABLE);
         }
-
     }
 
     @ExceptionHandler(value = NotFoundException.class)
@@ -34,7 +34,13 @@ public class ApiCatchException {
     }
 
     @ExceptionHandler(value = PermissionException.class)
-    public ResponseEntity<ErrorMessage> handlePermissionException(PermissionException ex, WebRequest request){
+    public ResponseEntity<ErrorMessage> handlePermissionException(PermissionException ex, WebRequest request) {
+        ErrorMessage error = new ErrorMessage(HttpStatus.CONFLICT.value(), new Date(), ex.getMessage());
+        return new ResponseEntity<ErrorMessage>(error, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(value = AlreadyExistsException.class)
+    public ResponseEntity<ErrorMessage> handlePermissionException(AlreadyExistsException ex, WebRequest request) {
         ErrorMessage error = new ErrorMessage(HttpStatus.CONFLICT.value(), new Date(), ex.getMessage());
         return new ResponseEntity<ErrorMessage>(error, HttpStatus.CONFLICT);
     }

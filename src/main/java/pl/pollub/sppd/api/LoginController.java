@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.pollub.sppd.security.LoginCredentials;
 import pl.pollub.sppd.service.exceptions.AlreadyExistsException;
-import pl.pollub.sppd.service.exceptions.GeneralException;
 import pl.pollub.sppd.service.LoginService;
 
 @RestController

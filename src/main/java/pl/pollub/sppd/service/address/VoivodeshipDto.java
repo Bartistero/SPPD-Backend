@@ -1,10 +1,8 @@
 package pl.pollub.sppd.service.address;
 
-import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import pl.pollub.sppd.model.address.Voivodeship;
 
-@NoArgsConstructor
 public class VoivodeshipDto extends AddressDto {
 
     public static VoivodeshipDto voivodeshipToVoivodeshipDto(Voivodeship voivodeship) {

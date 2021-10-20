@@ -52,4 +52,12 @@ public class AddressService {
                 .map(CityDto::cityToCityDto)
                 .collect(Collectors.toList());
     }
+
+    public List<StreetDto> getStreet(Long id) throws NotFoundException {
+        Borough borough = boroughRepository.findBoroughById(id).orElseThrow(
+                () -> new NotFoundException("County with id: " + id + " not found!"));
+        return borough.getStreet().stream()
+                .map(StreetDto::streetToStreetDto)
+                .collect(Collectors.toList());
+    }
 }

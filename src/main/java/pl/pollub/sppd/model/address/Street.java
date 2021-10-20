@@ -14,7 +14,7 @@ import java.util.Set;
 public class Street extends IdModel {
 
     private int voivodeshipCode;
-    private int CountyCode;
+    private int countyCode;
     private int boroughCode;
     private String characteristic;
     private String firstPart;

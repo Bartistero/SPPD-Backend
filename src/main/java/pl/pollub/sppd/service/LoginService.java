@@ -13,7 +13,7 @@ public class LoginService {
 
     public void checkAvailableLogin(String login) throws AlreadyExistsException {
         if (personRepository.findPersonByLogin(login) != null) {
-            throw new AlreadyExistsException("user with login " + login + "already exists");
+            throw new AlreadyExistsException("user with login " + login + " already exists");
         }
     }
 }

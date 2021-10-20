@@ -2,7 +2,6 @@ package pl.pollub.sppd.model.address;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import pl.pollub.sppd.model.IdModel;
 import pl.pollub.sppd.model.Person;
 

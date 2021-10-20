@@ -16,7 +16,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "Person")
 @NoArgsConstructor
 public class Person extends IdModel {
 
@@ -68,5 +67,4 @@ public class Person extends IdModel {
 
     private String houseNumber;
     private String flatNumber;
-
 }

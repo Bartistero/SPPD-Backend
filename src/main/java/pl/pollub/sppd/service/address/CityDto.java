@@ -9,11 +9,11 @@ public class CityDto extends AddressDto {
 
     public static CityDto cityToCityDto(City city) {
         CityDto cityDto = new CityDto();
-        BeanUtils.copyProperties(city, cityDto, "voivodeshipCode", "CountyCode","BoroughCode");
+        BeanUtils.copyProperties(city, cityDto, "voivodeshipCode", "CountyCode", "BoroughCode");
         return cityDto;
     }
 
-    public static City cityDtoToCity(CityDto cityDto){
+    public static City cityDtoToCity(CityDto cityDto) {
         City city = new City();
         city.setId(cityDto.getId());
         return city;

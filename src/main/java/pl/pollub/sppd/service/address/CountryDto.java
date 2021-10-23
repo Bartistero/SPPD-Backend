@@ -1,13 +1,15 @@
 package pl.pollub.sppd.service.address;
 
+import lombok.Getter;
 import org.springframework.beans.BeanUtils;
 import pl.pollub.sppd.model.address.Country;
 
+@Getter
 public class CountryDto extends AddressDto {
 
     public static CountryDto countryToCountryDto(Country country) {
         CountryDto countryDto = new CountryDto();
-        BeanUtils.copyProperties(country, countryDto, "voivodeshipCode", "CountyCode");
+        BeanUtils.copyProperties(country, countryDto);
         return countryDto;
     }
 

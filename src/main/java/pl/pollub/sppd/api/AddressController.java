@@ -14,6 +14,11 @@ public class AddressController {
 
     private final AddressService addressService;
 
+    @GetMapping("/country")
+    public List<CountryDto> getCountry(){
+        return addressService.getCountry();
+    }
+
     @GetMapping("/voivodeship")
     public List<VoivodeshipDto> get() {
         return addressService.getVoivodeship();

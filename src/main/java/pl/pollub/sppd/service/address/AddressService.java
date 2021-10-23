@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.model.address.Borough;
+import pl.pollub.sppd.model.address.Country;
 import pl.pollub.sppd.model.address.County;
 import pl.pollub.sppd.model.address.Voivodeship;
 import pl.pollub.sppd.model.repository.BoroughRepository;
+import pl.pollub.sppd.model.repository.CountryRepository;
 import pl.pollub.sppd.model.repository.CountyRepository;
 import pl.pollub.sppd.model.repository.VoivodeshipRepository;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
@@ -18,9 +20,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AddressService {
 
+    private final CountryRepository countryRepository;
     private final VoivodeshipRepository voivodeshipRepository;
     private final CountyRepository countyRepository;
     private final BoroughRepository boroughRepository;
+
+    public List<CountryDto> getCountry() {
+        List<Country> countryList = countryRepository.findAll();
+        return countryList.stream()
+                .map(CountryDto::countryToCountryDto)
+                .collect(Collectors.toList());
+    }
 
     public List<VoivodeshipDto> getVoivodeship() {
         List<Voivodeship> voivodeshipList = voivodeshipRepository.findAll();

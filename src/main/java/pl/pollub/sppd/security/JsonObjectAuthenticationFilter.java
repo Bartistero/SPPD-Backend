@@ -30,7 +30,7 @@ public class JsonObjectAuthenticationFilter extends UsernamePasswordAuthenticati
             }
             LoginCredentials loginCredentials = objectMapper.readValue(sb.toString(), LoginCredentials.class);
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    loginCredentials.getUsername(),  loginCredentials.getPassword()
+                    loginCredentials.getUsername(), loginCredentials.getPassword()
             );
             setDetails(request, token);
             return this.getAuthenticationManager().authenticate(token);

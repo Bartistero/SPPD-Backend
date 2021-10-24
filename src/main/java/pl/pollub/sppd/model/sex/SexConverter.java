@@ -1,24 +1,26 @@
-package pl.pollub.sppd.model.permission;
+package pl.pollub.sppd.model.sex;
+
+import pl.pollub.sppd.model.accountStatus.AccountStatus;
 
 import javax.persistence.AttributeConverter;
 import java.util.stream.Stream;
 
-public class PermissionConverter implements AttributeConverter<Permission, Long> {
+public class SexConverter implements AttributeConverter<Sex, Long> {
 
     @Override
-    public Long convertToDatabaseColumn(Permission attribute) {
-        if (attribute == null) {
+    public Long convertToDatabaseColumn(Sex sex) {
+        if (sex == null) {
             return null;
         }
-        return attribute.getNumber();
+        return sex.getNumber();
     }
 
     @Override
-    public Permission convertToEntityAttribute(Long dbData) {
+    public Sex convertToEntityAttribute(Long dbData) {
         if (dbData == null) {
             return null;
         }
-        return Stream.of(Permission.values())
+        return Stream.of(Sex.values())
                 .filter(f -> f.getNumber().equals(dbData))
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);

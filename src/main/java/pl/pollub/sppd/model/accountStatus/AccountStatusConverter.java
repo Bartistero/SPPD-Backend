@@ -7,20 +7,20 @@ public class AccountStatusConverter implements AttributeConverter<AccountStatus,
 
     @Override
     public Long convertToDatabaseColumn(AccountStatus attribute) {
-       if(attribute == null){
-           return null;
-       }
-       return attribute.getNumber();
+        if (attribute == null) {
+            return null;
+        }
+        return attribute.getNumber();
     }
 
     @Override
-    public AccountStatus convertToEntityAttribute(Long dbData){
-       if(dbData == null){
-           return null;
-       }
-       return Stream.of(AccountStatus.values())
-               .filter(f -> f.getNumber().equals(dbData))
-               .findFirst()
-               .orElseThrow(IllegalArgumentException::new);
+    public AccountStatus convertToEntityAttribute(Long dbData) {
+        if (dbData == null) {
+            return null;
+        }
+        return Stream.of(AccountStatus.values())
+                .filter(f -> f.getNumber().equals(dbData))
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
     }
 }

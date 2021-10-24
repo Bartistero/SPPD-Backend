@@ -23,10 +23,10 @@ public class SwaggerConfig {
 
     @Bean
     public Docket swaggerApi() {
-        return new Docket(DocumentationType. SWAGGER_2 )
+        return new Docket(DocumentationType.SWAGGER_2)
                 .ignoredParameterTypes(UsernamePasswordAuthenticationToken.class)
                 .select()
-                .paths(PathSelectors. regex ( "^(?!/(error).*$).*$" ))
+                .paths(PathSelectors.regex("^(?!/(error).*$).*$"))
                 .build()
                 .securitySchemes(singletonList(createSchema()))
                 .securityContexts(singletonList(createContext()));
@@ -42,6 +42,7 @@ public class SwaggerConfig {
                 .forPaths(PathSelectors.any())
                 .build();
     }
+
     private List<SecurityReference> createRef() {
         AuthorizationScope authorizationScope = new AuthorizationScope(
                 "global", "accessEverything");

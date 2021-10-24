@@ -8,6 +8,7 @@ import pl.pollub.sppd.model.accountStatus.AccountStatus;
 import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.sex.Sex;
 import pl.pollub.sppd.service.address.*;
+import pl.pollub.sppd.service.faculty.FacultyDto;
 
 @Getter
 @Setter
@@ -32,6 +33,7 @@ public class AdminDto {
     private Sex sex;
     private String houseNumber;
     private String flatNumber;
+    private FacultyDto facultyDto;
 
     public static Person AdminDtoToPerson(AdminDto adminDto) {
         Person person = new Person();
@@ -53,6 +55,7 @@ public class AdminDto {
         person.setSex(adminDto.getSex());
         person.setHouseNumber(adminDto.getHouseNumber());
         person.setFlatNumber(adminDto.getFlatNumber());
+        person.setFaculty(FacultyDto.facultyDtoToFaculty(adminDto.getFacultyDto()));
 
         return person;
     }

@@ -6,6 +6,7 @@ import lombok.Setter;
 import pl.pollub.sppd.model.accountStatus.AccountStatus;
 import pl.pollub.sppd.model.accountStatus.AccountStatusConverter;
 import pl.pollub.sppd.model.address.*;
+import pl.pollub.sppd.model.faculty.Faculty;
 import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.permission.PermissionConverter;
 import pl.pollub.sppd.model.sex.Sex;
@@ -64,6 +65,10 @@ public class Person extends IdModel {
     @Column(name = "idSex")
     @Convert(converter = SexConverter.class)
     private Sex sex;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idFaculty", nullable = false)
+    private Faculty faculty;
 
     private String houseNumber;
     private String flatNumber;

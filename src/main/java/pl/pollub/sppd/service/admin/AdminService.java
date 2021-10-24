@@ -20,11 +20,10 @@ public class AdminService {
     private final AddressVerification addressVerification;
     private final CheckPersonalData checkPersonalData;
     private final PersonRepository personRepository;
-    private final CheckPermission checkPermission;
     private final Mail mail;
 
     public AdminDto add(AdminDto adminDto, Permission authorities) throws GeneralException, PermissionException, MessagingException {
-        checkPermission.checkPermission(Permission.SUPER_ADMIN, authorities);
+        CheckPermission.checkPermission(Permission.SUPER_ADMIN, authorities);
         checkPersonalData.checkValidData(adminDto);
         checkAddress(adminDto);
         personRepository.save(AdminDto.AdminDtoToPerson(adminDto));

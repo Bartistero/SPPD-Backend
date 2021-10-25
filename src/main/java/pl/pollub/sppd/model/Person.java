@@ -3,6 +3,8 @@ package pl.pollub.sppd.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import pl.pollub.sppd.model.accountStatus.AccountStatus;
 import pl.pollub.sppd.model.accountStatus.AccountStatusConverter;
 import pl.pollub.sppd.model.address.*;
@@ -66,8 +68,8 @@ public class Person extends IdModel {
     @Convert(converter = SexConverter.class)
     private Sex sex;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idFaculty", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "idFaculty", nullable = true)
     private Faculty faculty;
 
     private String houseNumber;

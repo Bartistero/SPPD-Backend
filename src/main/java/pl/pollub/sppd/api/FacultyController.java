@@ -33,19 +33,19 @@ public class FacultyController {
     }
 
    @PostMapping
-    public FacultySaveDto post(FacultySaveDto facultySaveDtoDto) throws AlreadyExistsException, PermissionException {
+    public FacultySaveDto post(@RequestBody FacultySaveDto facultySaveDtoDto) throws AlreadyExistsException, PermissionException {
         checkPermission();
         return facultyService.post(facultySaveDtoDto);
    }
 
     @PutMapping
-    public FacultyDto update(FacultyDto facultyDto) throws AlreadyExistsException, NotFoundException, GeneralException, PermissionException {
+    public FacultyDto update(@RequestBody FacultyDto facultyDto) throws AlreadyExistsException, NotFoundException, GeneralException, PermissionException {
         checkPermission();
         return facultyService.update(facultyDto);
    }
 
    @DeleteMapping
-   public FacultyDto delete(FacultyDto facultyDto) throws NotFoundException, GeneralException, PermissionException {
+   public FacultyDto delete(@RequestBody FacultyDto facultyDto) throws NotFoundException, GeneralException, PermissionException {
         checkPermission();
         return facultyService.delete(facultyDto);
    }

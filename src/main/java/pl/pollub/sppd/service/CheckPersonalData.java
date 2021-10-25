@@ -2,6 +2,7 @@ package pl.pollub.sppd.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.pollub.sppd.model.Person;
 import pl.pollub.sppd.model.repository.PersonRepository;
 import pl.pollub.sppd.service.admin.AdminDto;
 import pl.pollub.sppd.service.exceptions.GeneralException;
@@ -15,7 +16,7 @@ public class CheckPersonalData {
 
     private final PersonRepository personRepository;
 
-    public void checkValidData(AdminDto admin) throws GeneralException {
+    public void checkValidData(PersonAbstractDto admin) throws GeneralException {
 
         List<String> errors = new ArrayList<>();
         if (admin.getName() == null) {
@@ -60,6 +61,6 @@ public class CheckPersonalData {
     }
 
     private boolean validatePesel(String pesel) {
-        return pesel.length() == 11 && personRepository.findPersonByPesel(pesel) != null;
+        return pesel.length() != 11 || personRepository.findPersonByPesel(pesel) != null;
     }
 }

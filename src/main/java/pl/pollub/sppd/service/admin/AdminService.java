@@ -51,13 +51,12 @@ public class AdminService {
         return adminDto;
     }
 
-    public AdminDto delete(AdminDto adminDto) throws NotFoundException {
-        if(adminDto.getId() == null || personRepository.findById(adminDto.getId()).isEmpty()){
-            throw new NotFoundException("Admin with id: " + adminDto.getId() + " not found");
-        }else{
-            personRepository.deleteById(adminDto.getId());
-        }
-        return adminDto;
+    public void delete(Long id ) throws NotFoundException, GeneralException {
+        if(id == null)
+            throw new GeneralException("Field id can not be null!");
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Admin with id: " + id + " don't exists"));
+        personRepository.delete(person);
     }
 
     private void checkData(PersonAbstractDto adminDto) throws GeneralException, NotFoundException {

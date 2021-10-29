@@ -1,7 +1,6 @@
 package pl.pollub.sppd.api;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ import pl.pollub.sppd.service.faculty.FacultyDto;
 import pl.pollub.sppd.service.faculty.FacultySaveDto;
 import pl.pollub.sppd.service.faculty.FacultyService;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,26 +30,27 @@ public class FacultyController {
         return facultyService.get();
     }
 
-   @PostMapping
+    @PostMapping
     public FacultySaveDto post(@RequestBody FacultySaveDto facultySaveDtoDto) throws AlreadyExistsException, PermissionException {
         checkPermission();
         return facultyService.post(facultySaveDtoDto);
-   }
+    }
 
     @PutMapping
     public FacultyDto update(@RequestBody FacultyDto facultyDto) throws AlreadyExistsException, NotFoundException, GeneralException, PermissionException {
         checkPermission();
         return facultyService.update(facultyDto);
-   }
+    }
 
-   @DeleteMapping
-   public FacultyDto delete(@RequestBody FacultyDto facultyDto) throws NotFoundException, GeneralException, PermissionException {
+
+    @DeleteMapping
+    public void delete(@RequestParam Long id) throws NotFoundException, GeneralException, PermissionException {
         checkPermission();
-        return facultyService.delete(facultyDto);
-   }
+        facultyService.delete(id);
+    }
 
-   private void checkPermission() throws PermissionException {
-       Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-       CheckPermission.checkPermission(Permission.SUPER_ADMIN, Permission.valueOf(authorities.iterator().next().toString()));
-   }
+    private void checkPermission() throws PermissionException {
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        CheckPermission.checkPermission(Permission.SUPER_ADMIN, Permission.valueOf(authorities.iterator().next().toString()));
+    }
 }

@@ -69,7 +69,7 @@ public class Person extends IdModel {
     private Sex sex;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "idFaculty", nullable = true)
+    @JoinColumn(name = "idFaculty", nullable = true, insertable = true)
     private Faculty faculty;
 
     private String houseNumber;

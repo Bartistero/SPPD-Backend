@@ -37,15 +37,15 @@ public class AdminController {
         return adminService.add(adminSaveDto);
     }
 
-    @PutMapping
+    @GetMapping("/put")
     public AdminDto update(@RequestBody AdminDto adminDto) throws PermissionException, NotFoundException, GeneralException {
         checkPermission();
         return adminService.update(adminDto);
     }
 
-    @DeleteMapping
-    public AdminDto delete(@RequestBody AdminDto adminDto) throws NotFoundException {
-       return adminService.delete(adminDto);
+    @GetMapping("/delete")
+    public void delete(@RequestParam Long id) throws NotFoundException, GeneralException {
+        adminService.delete(id);
     }
 
 

@@ -3,9 +3,7 @@ package pl.pollub.sppd.service.faculty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.model.faculty.Faculty;
-import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.repository.FacultyRepository;
-import pl.pollub.sppd.service.CheckPermission;
 import pl.pollub.sppd.service.exceptions.AlreadyExistsException;
 import pl.pollub.sppd.service.exceptions.GeneralException;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
@@ -28,29 +26,28 @@ public class FacultyService {
     }
 
     public FacultySaveDto post(FacultySaveDto facultySaveDto) throws AlreadyExistsException {
-        if(facultyRepository.findFacultyByName(facultySaveDto.getName()).isPresent())
-               throw new AlreadyExistsException("Faculty with name: " + facultySaveDto.getName() + " already exists");
+        if (facultyRepository.findFacultyByName(facultySaveDto.getName()).isPresent())
+            throw new AlreadyExistsException("Faculty with name: " + facultySaveDto.getName() + " already exists");
         facultyRepository.save(FacultySaveDto.facultySaveDtoToFaculty(facultySaveDto));
         return facultySaveDto;
     }
 
     public FacultyDto update(FacultyDto facultyDto) throws AlreadyExistsException, NotFoundException, GeneralException {
-        if(!facultyRepository.findFacultyByName(facultyDto.getName()).isEmpty())
+        if (facultyRepository.findFacultyByName(facultyDto.getName()).isPresent())
             throw new AlreadyExistsException("Faculty with name: " + facultyDto.getName() + " already exists");
-        if(facultyDto.getId() == null)
+        if (facultyDto.getId() == null)
             throw new GeneralException("Field id can not be null!");
         facultyRepository.findById(facultyDto.getId())
-                .orElseThrow( ()-> new NotFoundException("Faculty with id: " +facultyDto.getId() + " don't exists"));
+                .orElseThrow(() -> new NotFoundException("Faculty with id: " + facultyDto.getId() + " don't exists"));
         facultyRepository.save(FacultyDto.facultyDtoToFaculty(facultyDto));
         return facultyDto;
     }
 
-    public FacultyDto delete(FacultyDto facultyDto) throws NotFoundException, GeneralException {
-        if(facultyDto.getId() == null)
+    public void delete(Long id) throws NotFoundException, GeneralException {
+        if (id == null)
             throw new GeneralException("Field id can not be null!");
-        facultyRepository.findById(facultyDto.getId())
-                .orElseThrow( ()-> new NotFoundException("Faculty with id: " +facultyDto.getId() + " don't exists"));
-        facultyRepository.delete(FacultyDto.facultyDtoToFaculty(facultyDto));
-        return facultyDto;
+        Faculty faculty = facultyRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Faculty with id: " + id + " don't exists"));
+        facultyRepository.delete(faculty);
     }
 }

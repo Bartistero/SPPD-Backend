@@ -37,7 +37,7 @@ public class AdminController {
         return adminService.add(adminSaveDto);
     }
 
-    @GetMapping("/put")
+    @PostMapping("/put")
     public AdminDto update(@RequestBody AdminDto adminDto) throws PermissionException, NotFoundException, GeneralException {
         checkPermission();
         return adminService.update(adminDto);

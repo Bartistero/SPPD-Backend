@@ -36,17 +36,10 @@ public class FacultyController {
         return facultyService.post(facultySaveDtoDto);
     }
 
-    @PutMapping
+    @PostMapping("/update")
     public FacultyDto update(@RequestBody FacultyDto facultyDto) throws AlreadyExistsException, NotFoundException, GeneralException, PermissionException {
         checkPermission();
         return facultyService.update(facultyDto);
-    }
-
-
-    @DeleteMapping
-    public void delete(@RequestParam Long id) throws NotFoundException, GeneralException, PermissionException {
-        checkPermission();
-        facultyService.delete(id);
     }
 
     private void checkPermission() throws PermissionException {

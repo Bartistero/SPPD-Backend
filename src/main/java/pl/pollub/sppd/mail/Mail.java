@@ -14,14 +14,14 @@ public class Mail {
 
     private final JavaMailSender javaMailSender;
 
-    public void sendMail(String to, String subject, String text) throws MessagingException {
+    public void sendMail(String to, String subject) throws MessagingException {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
         helper.setTo(to);
         helper.setFrom("sppd@server168390.nazwa.pl");
         helper.setSubject(subject);
-        helper.setText(text, true);
+        helper.setText(registrationTemplate("jakisWygenerowanyToken"), true);
         javaMailSender.send(mimeMessage);
     }
 
@@ -33,7 +33,5 @@ public class Mail {
                         + "http://localhost:4200/email/activate?token=" + token
                         + "<br>Ta wiadomoścć została wygenerowana automatycznie, prosimy na nią nie odpowiadać.";
         return template;
-
-
     }
 }

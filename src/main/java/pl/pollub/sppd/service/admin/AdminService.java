@@ -41,12 +41,12 @@ public class AdminService {
     public AdminSaveDto add(AdminSaveDto adminSaveDto) throws GeneralException, MessagingException, NotFoundException {
         checkData(adminSaveDto);
         personRepository.save(AdminSaveDto.adminDtoToPerson(adminSaveDto));
-        mail.sendMail("bartek114@autograf.pl", "aktywacja", "sfsdfsfdsf");
+        mail.sendMail(adminSaveDto.getEmail(), "aktywacja");
         return adminSaveDto;
     }
 
     public AdminDto update(AdminDto adminDto) throws GeneralException, NotFoundException {
-        checkData(adminDto);
+        //checkData(adminDto);
         personRepository.save(AdminDto.adminDtoToPerson(adminDto));
         return adminDto;
     }

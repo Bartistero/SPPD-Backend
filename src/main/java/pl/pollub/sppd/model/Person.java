@@ -32,7 +32,7 @@ public class Person extends IdModel {
     private String pesel;
     private String phone;
 
-    @Column(name = "idPermissions")
+    @Column(name = "idPermission")
     @Convert(converter = PermissionConverter.class)
     private Permission permission;
 

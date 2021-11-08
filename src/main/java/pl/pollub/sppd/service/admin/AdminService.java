@@ -40,6 +40,7 @@ public class AdminService {
     }
 
     public AdminSaveDto add(AdminSaveDto adminSaveDto) throws GeneralException, MessagingException, NotFoundException {
+        checkPersonalData.validData(adminSaveDto);
         checkData(adminSaveDto);
         String token = GenerateToken.randomGenerator(80);
         adminSaveDto.setActiveToken(token);
@@ -49,13 +50,14 @@ public class AdminService {
     }
 
     public AdminDto update(AdminDto adminDto) throws GeneralException, NotFoundException {
-        //checkData(adminDto);
+        checkPersonalData.validUpdateData(adminDto);
+        checkData(adminDto);
         personRepository.save(AdminDto.adminDtoToPerson(adminDto));
         return adminDto;
     }
 
-    public void delete(Long id ) throws NotFoundException, GeneralException {
-        if(id == null)
+    public void delete(Long id) throws NotFoundException, GeneralException {
+        if (id == null)
             throw new GeneralException("Field id can not be null!");
         Person person = personRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Admin with id: " + id + " don't exists"));
@@ -63,7 +65,6 @@ public class AdminService {
     }
 
     private void checkData(PersonAbstractDto adminDto) throws GeneralException, NotFoundException {
-        checkPersonalData.checkValidData(adminDto);
         addressVerification.checkAvailabilityAddress(
                 adminDto.getCountryDto(),
                 adminDto.getVoivodeshipDto(),
@@ -71,6 +72,7 @@ public class AdminService {
                 adminDto.getBoroughDto(),
                 adminDto.getCityDto(),
                 adminDto.getStreetDto());
+
         facultyVerification.checkAvailabilityFaculty(adminDto.getFacultyDto().getId());
         PermissionVerification.checkPermission(adminDto.getPermission());
     }

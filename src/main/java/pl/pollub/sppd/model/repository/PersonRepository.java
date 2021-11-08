@@ -2,9 +2,9 @@ package pl.pollub.sppd.model.repository;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import pl.pollub.sppd.model.Person;
 import pl.pollub.sppd.model.permission.Permission;
-import pl.pollub.sppd.service.admin.AdminDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +20,10 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     List<Person> findPersonByPermission(Permission permission, Pageable page);
 
     Optional<Person> findUserByActivateToken(String token);
+
+    @Query("select o from Person  o where o.email=:email and o.login<>:login")
+    List<Person> checkEmail(String email, String login);
+
+    @Query("select o from Person o where o.pesel=:pesel and o.login <>:login")
+    List<Person> checkPesel(String pesel, String login);
 }

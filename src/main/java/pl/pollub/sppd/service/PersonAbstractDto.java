@@ -8,7 +8,6 @@ import pl.pollub.sppd.model.accountStatus.AccountStatus;
 import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.sex.Sex;
 import pl.pollub.sppd.service.address.*;
-import pl.pollub.sppd.service.admin.AdminDto;
 import pl.pollub.sppd.service.faculty.FacultyDto;
 
 @Getter

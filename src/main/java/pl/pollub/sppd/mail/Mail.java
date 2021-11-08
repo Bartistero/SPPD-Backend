@@ -14,23 +14,23 @@ public class Mail {
 
     private final JavaMailSender javaMailSender;
 
-    public void sendMail(String to, String subject) throws MessagingException {
+    public void sendMail(String to, String token, String username) throws MessagingException {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
         helper.setTo(to);
         helper.setFrom("sppd@server168390.nazwa.pl");
-        helper.setSubject(subject);
-        helper.setText(registrationTemplate("jakisWygenerowanyToken"), true);
+        helper.setSubject("Aktywacja konta");
+        helper.setText(registrationTemplate(token, username), true);
         javaMailSender.send(mimeMessage);
     }
 
-    public String registrationTemplate(String token) {
+    public String registrationTemplate(String token,String username) {
 
         String template =
-                "<h4 style=\"text-align:center;\">Witamy w gronie, posidaczy Portalu Podatkowego</h4>"
+                "<h4 style=\"text-align:center;\">Witamy Systemie przydału prac dyplomowych i zapisu do promotorów</h4>"
                         + "Kliknij w poniższy link aby aktywować swoje konto<br>"
-                        + "http://localhost:4200/email/activate?token=" + token
+                        + "http://localhost:4200/email/activate?username=username&token=" + token
                         + "<br>Ta wiadomoścć została wygenerowana automatycznie, prosimy na nią nie odpowiadać.";
         return template;
     }

@@ -7,6 +7,7 @@ import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.service.admin.AdminDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
@@ -18,4 +19,5 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     List<Person> findPersonByPermission(Permission permission, Pageable page);
 
+    Optional<Person> findUserByActivateToken(String token);
 }

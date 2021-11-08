@@ -8,6 +8,7 @@ import pl.pollub.sppd.model.Person;
 import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.repository.PersonRepository;
 import pl.pollub.sppd.service.CheckPersonalData;
+import pl.pollub.sppd.service.GenerateToken;
 import pl.pollub.sppd.service.PermissionVerification;
 import pl.pollub.sppd.service.PersonAbstractDto;
 import pl.pollub.sppd.service.exceptions.GeneralException;
@@ -40,8 +41,10 @@ public class AdminService {
 
     public AdminSaveDto add(AdminSaveDto adminSaveDto) throws GeneralException, MessagingException, NotFoundException {
         checkData(adminSaveDto);
+        String token = GenerateToken.randomGenerator(80);
+        adminSaveDto.setActiveToken(token);
         personRepository.save(AdminSaveDto.adminDtoToPerson(adminSaveDto));
-        mail.sendMail(adminSaveDto.getEmail(), "aktywacja");
+        mail.sendMail(adminSaveDto.getEmail(), token, adminSaveDto.getLogin());
         return adminSaveDto;
     }
 

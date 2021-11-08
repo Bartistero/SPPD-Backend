@@ -74,4 +74,6 @@ public class Person extends IdModel {
 
     private String houseNumber;
     private String flatNumber;
+
+    private String activateToken;
 }

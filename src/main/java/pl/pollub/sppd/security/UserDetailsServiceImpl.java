@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.model.Person;
+import pl.pollub.sppd.model.accountStatus.AccountStatus;
 import pl.pollub.sppd.model.repository.PersonRepository;
 
 import javax.transaction.Transactional;
@@ -25,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Person person = personRepository.findPersonByLogin(username);
-        if (person == null) {
+        if (person == null || person.getAccountStatus() != AccountStatus.ACTIVE) {
             throw new UsernameNotFoundException("Could not find user");
         }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();

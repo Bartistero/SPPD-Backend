@@ -3,17 +3,19 @@ package pl.pollub.sppd.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.service.CheckPermission;
 import pl.pollub.sppd.service.admin.AdminDto;
+import pl.pollub.sppd.service.admin.AdminSaveDto;
+import pl.pollub.sppd.service.exceptions.GeneralException;
+import pl.pollub.sppd.service.exceptions.NotFoundException;
 import pl.pollub.sppd.service.exceptions.PermissionException;
 import pl.pollub.sppd.service.user.UserDto;
+import pl.pollub.sppd.service.user.UserSaveDto;
 import pl.pollub.sppd.service.user.UserService;
 
+import javax.mail.MessagingException;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,6 +31,12 @@ public class UserController {
                              @RequestParam(required = true) Integer pageSize) throws PermissionException {
         checkPermission();
         return userService.get(page, pageSize);
+    }
+
+    @PostMapping
+    public UserSaveDto add(@RequestBody UserSaveDto userSaveDto) throws PermissionException, GeneralException, NotFoundException, MessagingException {
+        checkPermission();
+        return userService.add(userSaveDto);
     }
 
     private void checkPermission() throws PermissionException {

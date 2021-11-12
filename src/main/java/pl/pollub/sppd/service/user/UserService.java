@@ -1,6 +1,7 @@
 package pl.pollub.sppd.service.user;
 
 import lombok.AllArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.mail.Mail;
@@ -12,6 +13,7 @@ import pl.pollub.sppd.service.GenerateToken;
 import pl.pollub.sppd.service.PermissionVerification;
 import pl.pollub.sppd.service.PersonAbstractDto;
 import pl.pollub.sppd.service.address.AddressVerification;
+import pl.pollub.sppd.service.admin.AdminDto;
 import pl.pollub.sppd.service.exceptions.GeneralException;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
 import pl.pollub.sppd.service.faculty.FacultyVerification;
@@ -51,6 +53,13 @@ public class UserService {
         personRepository.save(UserSaveDto.userSaveDtoToPerson(userSaveDto));
         mail.sendMail(userSaveDto.getEmail(), token, userSaveDto.getLogin());
         return userSaveDto;
+    }
+
+    public UserDto update(UserDto userDto) throws GeneralException, NotFoundException {
+        checkPersonalData.validUpdateData(userDto);
+        checkData(userDto);
+        personRepository.save(UserDto.userDtoToPerson(userDto));
+        return userDto;
     }
 
     private void checkData(PersonAbstractDto adminDto) throws GeneralException, NotFoundException {

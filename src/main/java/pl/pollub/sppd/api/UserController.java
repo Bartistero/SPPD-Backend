@@ -39,6 +39,12 @@ public class UserController {
         return userService.add(userSaveDto);
     }
 
+    @PostMapping("/put")
+    public UserDto update(@RequestBody UserDto userDto) throws PermissionException, NotFoundException, GeneralException {
+        checkPermission();
+        return userService.update(userDto);
+    }
+
     private void checkPermission() throws PermissionException {
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         CheckPermission.checkPermission(Permission.ADMIN, Permission.valueOf(authorities.iterator().next().toString()));

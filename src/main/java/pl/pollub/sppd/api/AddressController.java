@@ -15,7 +15,7 @@ public class AddressController {
     private final AddressService addressService;
 
     @GetMapping("/country")
-    public List<CountryDto> getCountry(){
+    public List<CountryDto> getCountry() {
         return addressService.getCountry();
     }
 

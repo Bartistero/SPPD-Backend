@@ -12,7 +12,7 @@ public class UserDto extends PersonAbstractDto {
     String albumNumber;
     Long id;
 
-    public static Person userDtoToPerson(UserDto userDto){
+    public static Person userDtoToPerson(UserDto userDto) {
         Person person = adminAbstractDtoToPerson(userDto);
         person.setId(userDto.getId());
         return person;

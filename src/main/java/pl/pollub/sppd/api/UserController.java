@@ -6,8 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.service.CheckPermission;
-import pl.pollub.sppd.service.admin.AdminDto;
-import pl.pollub.sppd.service.admin.AdminSaveDto;
 import pl.pollub.sppd.service.exceptions.GeneralException;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
 import pl.pollub.sppd.service.exceptions.PermissionException;

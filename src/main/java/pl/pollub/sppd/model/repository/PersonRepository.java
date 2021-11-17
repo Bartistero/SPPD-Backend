@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import pl.pollub.sppd.model.Person;
+import pl.pollub.sppd.model.accountStatus.AccountStatus;
 import pl.pollub.sppd.model.permission.Permission;
 
 import java.util.List;
@@ -29,4 +30,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     @Query("Select o from Person o where o.permission=:permission and o.faculty.id=:facultyId")
     List<Person> findPersonByPermissionAndFaculty(Permission permission, Long facultyId);
+
+    @Query("select o from Person o where o.accountStatus=:accountStatus")
+    List<Person> findBlockPerson(AccountStatus accountStatus);
 }

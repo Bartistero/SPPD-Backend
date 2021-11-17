@@ -25,10 +25,9 @@ public class AdminController {
     private final AdminService adminService;
 
     @GetMapping
-    public List<AdminDto> get(@RequestParam(required = true) Integer page,
-                              @RequestParam(required = true) Integer pageSize) throws PermissionException {
+    public List<AdminDto> get() throws PermissionException {
         checkPermission();
-        return adminService.get(page, pageSize);
+        return adminService.get();
     }
 
     @PostMapping

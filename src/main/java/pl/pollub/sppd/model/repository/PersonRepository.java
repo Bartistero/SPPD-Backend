@@ -17,7 +17,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     Person findPersonByPesel(String pesel);
 
-    List<Person> findPersonByPermission(Permission permission, Pageable page);
+    List<Person> findPersonByPermission(Permission permission);
 
     Optional<Person> findUserByActivateToken(String token);
 
@@ -26,4 +26,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     @Query("select o from Person o where o.pesel=:pesel and o.login <>:login")
     List<Person> checkPesel(String pesel, String login);
+
+    @Query("Select o from Person o where o.permission=:permission and o.faculty.id=:facultyId")
+    List<Person> findPersonByPermissionAndFaculty(Permission permission, Long facultyId);
 }

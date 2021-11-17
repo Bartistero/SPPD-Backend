@@ -30,10 +30,8 @@ public class AdminService {
     private final PersonRepository personRepository;
     private final Mail mail;
 
-    public List<AdminDto> get(Integer page, Integer size) {
-        int pageNumber = page != null && page >= 0 ? page : 0;
-        int pageSize = size != null && size > 0 ? size : 1;
-        List<Person> personList = personRepository.findPersonByPermission(Permission.ADMIN, PageRequest.of(pageNumber, pageSize));
+    public List<AdminDto> get() {
+        List<Person> personList = personRepository.findPersonByPermission(Permission.ADMIN);
         return personList.stream()
                 .map(AdminDto::personToAdminDto)
                 .collect(Collectors.toList());
@@ -42,6 +40,7 @@ public class AdminService {
     public AdminSaveDto add(AdminSaveDto adminSaveDto) throws GeneralException, MessagingException, NotFoundException {
         checkPersonalData.validData(adminSaveDto);
         checkData(adminSaveDto);
+        facultyVerification.checkAvailabilityFaculty(adminSaveDto.getFacultyDto().getId());
         String token = GenerateToken.randomGenerator(80);
         adminSaveDto.setActiveToken(token);
         personRepository.save(AdminSaveDto.adminDtoToPerson(adminSaveDto));
@@ -73,7 +72,6 @@ public class AdminService {
                 adminDto.getCityDto(),
                 adminDto.getStreetDto());
 
-        facultyVerification.checkAvailabilityFaculty(adminDto.getFacultyDto().getId());
         PermissionVerification.checkPermission(adminDto.getPermission());
     }
 }

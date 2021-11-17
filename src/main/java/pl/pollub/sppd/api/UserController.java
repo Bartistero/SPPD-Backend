@@ -25,16 +25,15 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserDto> get(@RequestParam(required = true) Integer page,
-                             @RequestParam(required = true) Integer pageSize) throws PermissionException {
+    public List<UserDto> get(Permission permission) throws PermissionException {
         checkPermission();
-        return userService.get(page, pageSize);
+        return userService.get(permission, getLogin());
     }
 
     @PostMapping
     public UserSaveDto add(@RequestBody UserSaveDto userSaveDto) throws PermissionException, GeneralException, NotFoundException, MessagingException {
         checkPermission();
-        return userService.add(userSaveDto);
+        return userService.add(userSaveDto, getLogin());
     }
 
     @PostMapping("/put")
@@ -46,5 +45,9 @@ public class UserController {
     private void checkPermission() throws PermissionException {
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         CheckPermission.checkPermission(Permission.ADMIN, Permission.valueOf(authorities.iterator().next().toString()));
+    }
+
+    private String getLogin() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

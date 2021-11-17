@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.mail.Mail;
 import pl.pollub.sppd.model.Person;
+import pl.pollub.sppd.model.faculty.Faculty;
 import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.repository.PersonRepository;
 import pl.pollub.sppd.service.CheckPersonalData;
@@ -33,24 +34,21 @@ public class UserService {
     private final PersonRepository personRepository;
     private final Mail mail;
 
-    public List<UserDto> get(Integer page, Integer size) {
-        int pageNumber = page != null && page >= 0 ? page : 0;
-        int pageSize = size != null && size > 0 ? size : 1;
-        List<Person> personList = personRepository.findPersonByPermission(Permission.LECTURER, PageRequest.of(pageNumber, pageSize));
-        personList = Stream.concat(personList.stream(), personRepository.findPersonByPermission
-                (Permission.STUDENT, PageRequest.of(pageNumber, pageSize)).stream())
-                .collect(Collectors.toList());
+    public List<UserDto> get(Permission permission, String login) {
+        Long facultyId = personRepository.findPersonByLogin(login).getFaculty().getId();
+        List<Person> personList = personRepository.findPersonByPermissionAndFaculty(permission, facultyId);
         return personList.stream()
                 .map(UserDto::personToUserDto)
                 .collect(Collectors.toList());
     }
 
-    public UserSaveDto add(UserSaveDto userSaveDto) throws GeneralException, NotFoundException, MessagingException {
+    public UserSaveDto add(UserSaveDto userSaveDto, String login) throws GeneralException, NotFoundException, MessagingException {
         checkPersonalData.validData(userSaveDto);
         checkData(userSaveDto);
         String token = GenerateToken.randomGenerator(80);
         userSaveDto.setActiveToken(token);
-        personRepository.save(UserSaveDto.userSaveDtoToPerson(userSaveDto));
+        Faculty faculty = personRepository.findPersonByLogin(login).getFaculty();
+        personRepository.save(UserSaveDto.userSaveDtoToPerson(userSaveDto,faculty));
         mail.sendMail(userSaveDto.getEmail(), token, userSaveDto.getLogin());
         return userSaveDto;
     }
@@ -71,7 +69,6 @@ public class UserService {
                 adminDto.getCityDto(),
                 adminDto.getStreetDto());
 
-        facultyVerification.checkAvailabilityFaculty(adminDto.getFacultyDto().getId());
         PermissionVerification.checkPermission(adminDto.getPermission());
     }
 }

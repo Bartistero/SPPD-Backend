@@ -32,7 +32,6 @@ public abstract class PersonAbstractDto {
     private Sex sex;
     private String houseNumber;
     private String flatNumber;
-    private FacultyDto facultyDto;
 
     protected static Person adminAbstractDtoToPerson(PersonAbstractDto adminDto) {
 
@@ -55,7 +54,6 @@ public abstract class PersonAbstractDto {
         person.setSex(adminDto.getSex());
         person.setHouseNumber(adminDto.getHouseNumber());
         person.setFlatNumber(adminDto.getFlatNumber());
-        person.setFaculty(FacultyDto.facultyDtoToFaculty(adminDto.getFacultyDto()));
 
         return person;
     }
@@ -79,7 +77,6 @@ public abstract class PersonAbstractDto {
         personAbstractDto.setSex(person.getSex());
         personAbstractDto.setHouseNumber(person.getHouseNumber());
         personAbstractDto.setFlatNumber(person.getFlatNumber());
-        personAbstractDto.setFacultyDto(FacultyDto.facultyToFacultyDto(person.getFaculty()));
         return personAbstractDto;
     }
 }

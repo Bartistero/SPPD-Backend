@@ -1,8 +1,6 @@
 package pl.pollub.sppd.service.user;
 
 import lombok.AllArgsConstructor;
-import org.apache.catalina.User;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.mail.Mail;
 import pl.pollub.sppd.model.Person;
@@ -14,7 +12,6 @@ import pl.pollub.sppd.service.GenerateToken;
 import pl.pollub.sppd.service.PermissionVerification;
 import pl.pollub.sppd.service.PersonAbstractDto;
 import pl.pollub.sppd.service.address.AddressVerification;
-import pl.pollub.sppd.service.admin.AdminDto;
 import pl.pollub.sppd.service.exceptions.GeneralException;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
 import pl.pollub.sppd.service.faculty.FacultyVerification;
@@ -22,7 +19,6 @@ import pl.pollub.sppd.service.faculty.FacultyVerification;
 import javax.mail.MessagingException;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor

@@ -3,8 +3,6 @@ package pl.pollub.sppd.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import pl.pollub.sppd.model.accountStatus.AccountStatus;
 import pl.pollub.sppd.model.accountStatus.AccountStatusConverter;
 import pl.pollub.sppd.model.address.*;
@@ -31,6 +29,7 @@ public class Person extends IdModel {
     private String albumNumber;
     private String pesel;
     private String phone;
+    private Integer loginAttempts;
 
     @Column(name = "idPermission")
     @Convert(converter = PermissionConverter.class)

@@ -1,20 +1,33 @@
 package pl.pollub.sppd.security;
 
-import org.springframework.security.core.AuthenticationException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationListener;
+import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import pl.pollub.sppd.model.Person;
+import pl.pollub.sppd.model.accountStatus.AccountStatus;
+import pl.pollub.sppd.model.repository.PersonRepository;
 
 @Component
-public class FailureHandler extends SimpleUrlAuthenticationFailureHandler {
+@RequiredArgsConstructor
+public class FailureHandler extends SimpleUrlAuthenticationFailureHandler implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
+
+    private final PersonRepository personRepository;
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException, ServletException {
-        super.onAuthenticationFailure(request, response, exception);
+    public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event) {
+        Object login = event.getAuthentication().getPrincipal();
+        Person person = personRepository.findPersonByLogin(login.toString());
+        Integer count = person.getLoginAttempts();
+        System.out.println(count);
+        count++;
+        person.setLoginAttempts(count);
+        if(count > 3){
+            person.setAccountStatus(AccountStatus.SUSPENDED);
+            count = 0;
+            person.setLoginAttempts(count);
+        }
+        personRepository.save(person);
     }
 }

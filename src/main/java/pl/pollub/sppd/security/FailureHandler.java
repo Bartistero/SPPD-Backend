@@ -23,7 +23,7 @@ public class FailureHandler extends SimpleUrlAuthenticationFailureHandler implem
         System.out.println(count);
         count++;
         person.setLoginAttempts(count);
-        if(count > 3){
+        if(count >= 3){
             person.setAccountStatus(AccountStatus.SUSPENDED);
             count = 0;
             person.setLoginAttempts(count);

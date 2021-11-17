@@ -5,6 +5,7 @@ import lombok.extern.java.Log;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import pl.pollub.sppd.model.accountStatus.AccountStatus;
 import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.security.BlockUserDto;
 import pl.pollub.sppd.security.LoginCredentials;
@@ -30,8 +31,8 @@ public class LoginController {
     }
 
     @GetMapping("/check/{login}")
-    public void login(@PathVariable String login) throws AlreadyExistsException, PermissionException {
-        checkPermission();
+    public void login(@PathVariable String login) throws AlreadyExistsException{
+        //checkPermission();
         loginService.checkAvailableLogin(login);
     }
 
@@ -42,12 +43,17 @@ public class LoginController {
 
     @GetMapping("/block-user")
     public List<BlockUserDto> blockUser() throws PermissionException {
-        checkPermission();
+        checkPermission(Permission.ADMIN);
         return loginService.getBlockUser();
     }
 
-    private void checkPermission() throws PermissionException {
+    @GetMapping("/account-status")
+    public AccountStatus accountStatus(String login) throws PermissionException {
+        return loginService.getAccountStatus(login);
+    }
+
+    private void checkPermission(Permission permission) throws PermissionException {
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        CheckPermission.checkPermission(Permission.SUPER_ADMIN, Permission.valueOf(authorities.iterator().next().toString()));
+        CheckPermission.checkPermission(permission, Permission.valueOf(authorities.iterator().next().toString()));
     }
 }

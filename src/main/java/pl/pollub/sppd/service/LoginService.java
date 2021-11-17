@@ -48,4 +48,8 @@ public class LoginService {
                 .map(BlockUserDto::personToBlockUserDto)
                 .collect(Collectors.toList());
     }
+
+    public AccountStatus getAccountStatus(String login){
+        return personRepository.findPersonByLogin(login).getAccountStatus();
+    }
 }

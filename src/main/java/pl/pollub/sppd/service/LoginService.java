@@ -39,6 +39,8 @@ public class LoginService {
                         "user with the given token don't exists"));
         person.setAccountStatus(AccountStatus.ACTIVE);
         person.setPassword(passwordEncoder.encode(login.getPassword()));
+        person.setLoginAttempts(0);
+        person.setActivateToken("");
         personRepository.save(person);
     }
 

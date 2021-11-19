@@ -12,12 +12,16 @@ import pl.pollub.sppd.model.accountStatus.AccountStatus;
 public class BlockUserDto {
 
     Long Id;
+    String name;
+    String surname;
     String userName;
     AccountStatus accountStatus;
 
     public static BlockUserDto personToBlockUserDto(Person person){
         BlockUserDto blockUserDto = new BlockUserDto();
         blockUserDto.setId(person.getId());
+        blockUserDto.setName(person.getName());
+        blockUserDto.setSurname(person.getSurname());
         blockUserDto.setUserName(person.getName());
         blockUserDto.setAccountStatus(person.getAccountStatus());
         return blockUserDto;

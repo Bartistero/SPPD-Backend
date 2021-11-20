@@ -19,7 +19,7 @@ public class Mail {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
         helper.setTo(to);
-        helper.setFrom("sppd@server168390.nazwa.pl");
+        helper.setFrom("sppd@server479209.nazwa.pl");
         helper.setSubject("Aktywacja konta");
         helper.setText(registrationTemplate(token, username), true);
         javaMailSender.send(mimeMessage);

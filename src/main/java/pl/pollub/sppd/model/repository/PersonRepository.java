@@ -3,6 +3,7 @@ package pl.pollub.sppd.model.repository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import pl.pollub.sppd.model.Person;
 import pl.pollub.sppd.model.accountStatus.AccountStatus;
 import pl.pollub.sppd.model.permission.Permission;
@@ -10,7 +11,7 @@ import pl.pollub.sppd.model.permission.Permission;
 import java.util.List;
 import java.util.Optional;
 
-public interface PersonRepository extends JpaRepository<Person, Long> {
+public interface PersonRepository extends CrudRepository<Person, Long> {
 
     Person findPersonByLogin(String login);
 

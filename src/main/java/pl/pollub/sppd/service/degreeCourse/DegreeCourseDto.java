@@ -1,16 +1,17 @@
 package pl.pollub.sppd.service.degreeCourse;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import pl.pollub.sppd.model.faculty.DegreeCourse;
 
 @Getter
 @Setter
-public class DegreeCourseDto {
+@NoArgsConstructor
+public class DegreeCourseDto extends DegreeCourseSaveDto {
 
-    Long id;
-    String name;
+    private Long id;
 
     public static DegreeCourseDto degreeCourseToDegreeCourseDto(DegreeCourse degreeCourse) {
         DegreeCourseDto degreeCourseDto = new DegreeCourseDto();
@@ -18,9 +19,8 @@ public class DegreeCourseDto {
         return degreeCourseDto;
     }
 
-    public static DegreeCourse degreeCourseDtoToDegreeCourse(DegreeCourseDto degreeCourseDto) {
-        DegreeCourse degreeCourse = new DegreeCourse();
-        BeanUtils.copyProperties(degreeCourseDto, degreeCourse);
-        return degreeCourse;
+    public static DegreeCourse degreeCourseDtoToDegreeCourse(DegreeCourseDto degreeCourseDto, DegreeCourse course) {
+        BeanUtils.copyProperties(degreeCourseDto, course);
+        return course;
     }
 }

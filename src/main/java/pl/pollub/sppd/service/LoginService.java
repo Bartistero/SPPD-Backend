@@ -1,6 +1,8 @@
 package pl.pollub.sppd.service;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,7 @@ public class LoginService {
     private final PersonRepository personRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
+
     public void checkAvailableLogin(String login) throws AlreadyExistsException {
         if (personRepository.findPersonByLogin(login) != null) {
             throw new AlreadyExistsException("user with login " + login + " already exists");
@@ -49,6 +52,12 @@ public class LoginService {
         return personList.stream()
                 .map(BlockUserDto::personToBlockUserDto)
                 .collect(Collectors.toList());
+    }
+
+    public BlockUserDto updateBlockUser(BlockUserDto user){
+        Person person = personRepository.findPersonByLogin(user.getUserName());
+        personRepository.save(BlockUserDto.blockUserDtoToPerson(user,person));
+        return user;
     }
 
     public AccountStatus getAccountStatus(String login){

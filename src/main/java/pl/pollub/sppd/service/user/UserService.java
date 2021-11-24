@@ -1,6 +1,8 @@
 package pl.pollub.sppd.service.user;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.mail.Mail;
 import pl.pollub.sppd.model.Person;
@@ -49,10 +51,13 @@ public class UserService {
         return userSaveDto;
     }
 
-    public UserDto update(UserDto userDto) throws GeneralException, NotFoundException {
+    public UserDto update(UserDto userDto, String login) throws GeneralException, NotFoundException {
         checkPersonalData.validUpdateData(userDto);
         checkData(userDto);
-        personRepository.save(UserDto.userDtoToPerson(userDto));
+        Person person = personRepository.findPersonByLogin(userDto.getLogin());
+        BeanUtils.copyProperties(userDto,person,"id");
+        System.out.println(person.getFaculty());
+        personRepository.save(person);
         return userDto;
     }
 

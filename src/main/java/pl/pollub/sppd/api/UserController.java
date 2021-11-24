@@ -39,7 +39,7 @@ public class UserController {
     @PostMapping("/put")
     public UserDto update(@RequestBody UserDto userDto) throws PermissionException, NotFoundException, GeneralException {
         checkPermission();
-        return userService.update(userDto);
+        return userService.update(userDto,getLogin());
     }
 
     private void checkPermission() throws PermissionException {

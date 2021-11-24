@@ -47,7 +47,6 @@ public class AdminController {
         adminService.delete(id);
     }
 
-
     private void checkPermission() throws PermissionException {
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         CheckPermission.checkPermission(Permission.SUPER_ADMIN, Permission.valueOf(authorities.iterator().next().toString()));

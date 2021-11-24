@@ -12,8 +12,8 @@ public class UserDto extends PersonAbstractDto {
     String albumNumber;
     Long id;
 
-    public static Person userDtoToPerson(UserDto userDto) {
-        Person person = adminAbstractDtoToPerson(userDto);
+    public static Person userDtoToPerson(UserDto userDto, Person perosn) {
+        Person person = new Person();
         person.setId(userDto.getId());
         return person;
     }
@@ -21,6 +21,7 @@ public class UserDto extends PersonAbstractDto {
     public static UserDto personToUserDto(Person person) {
         UserDto userDto = (UserDto) personToAdminAbstractDto(person, new UserDto());
         userDto.setId(person.getId());
+        userDto.setAlbumNumber(person.getAlbumNumber());
         return userDto;
     }
 }

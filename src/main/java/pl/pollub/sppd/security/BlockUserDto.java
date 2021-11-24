@@ -22,13 +22,12 @@ public class BlockUserDto {
         blockUserDto.setId(person.getId());
         blockUserDto.setName(person.getName());
         blockUserDto.setSurname(person.getSurname());
-        blockUserDto.setUserName(person.getName());
+        blockUserDto.setUserName(person.getLogin());
         blockUserDto.setAccountStatus(person.getAccountStatus());
         return blockUserDto;
     }
 
-    public static Person BlockUserDtoToPerson(BlockUserDto blockUserDto){
-        Person person = new Person();
+    public static Person blockUserDtoToPerson(BlockUserDto blockUserDto, Person person){
         person.setId(blockUserDto.getId());
         person.setAccountStatus(blockUserDto.getAccountStatus());
         return person;

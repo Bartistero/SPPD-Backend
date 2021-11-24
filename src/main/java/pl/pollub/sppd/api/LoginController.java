@@ -47,6 +47,12 @@ public class LoginController {
         return loginService.getBlockUser();
     }
 
+    @PostMapping("/block-user")
+    public BlockUserDto blockUserUpdate(@RequestBody BlockUserDto userDto) throws PermissionException {
+        checkPermission(Permission.ADMIN);
+        return loginService.updateBlockUser(userDto);
+    }
+
     @GetMapping("/account-status")
     public AccountStatus accountStatus(String login) throws PermissionException {
         return loginService.getAccountStatus(login);

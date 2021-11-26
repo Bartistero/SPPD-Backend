@@ -1,7 +1,6 @@
 package pl.pollub.sppd.api;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,8 @@ import pl.pollub.sppd.service.exceptions.AlreadyExistsException;
 import pl.pollub.sppd.service.LoginService;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
 import pl.pollub.sppd.service.exceptions.PermissionException;
-import pl.pollub.sppd.service.user.UserSaveDto;
 
+import javax.mail.MessagingException;
 import java.util.Collection;
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class LoginController {
     }
 
     @PostMapping("/block-user")
-    public BlockUserDto blockUserUpdate(@RequestBody BlockUserDto userDto) throws PermissionException {
+    public BlockUserDto blockUserUpdate(@RequestBody BlockUserDto userDto) throws PermissionException, MessagingException {
         checkPermission(Permission.ADMIN);
         return loginService.updateBlockUser(userDto);
     }

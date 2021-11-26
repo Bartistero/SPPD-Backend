@@ -16,6 +16,7 @@ public class UserSaveDto extends PersonAbstractDto {
     public static Person userSaveDtoToPerson(UserSaveDto userSaveDto, Faculty faculty) {
         Person person = adminAbstractDtoToPerson(userSaveDto);
         person.setActivateToken(userSaveDto.getActiveToken());
+        person.setAlbumNumber(userSaveDto.getAlbumNumber());
         person.setFaculty(faculty);
         return person;
     }

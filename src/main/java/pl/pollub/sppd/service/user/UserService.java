@@ -2,7 +2,6 @@ package pl.pollub.sppd.service.user;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.mail.Mail;
 import pl.pollub.sppd.model.Person;
@@ -46,7 +45,7 @@ public class UserService {
         String token = GenerateToken.randomGenerator(80);
         userSaveDto.setActiveToken(token);
         Faculty faculty = personRepository.findPersonByLogin(login).getFaculty();
-        personRepository.save(UserSaveDto.userSaveDtoToPerson(userSaveDto,faculty));
+        personRepository.save(UserSaveDto.userSaveDtoToPerson(userSaveDto, faculty));
         mail.sendMail(userSaveDto.getEmail(), token, userSaveDto.getLogin());
         return userSaveDto;
     }
@@ -55,8 +54,9 @@ public class UserService {
         checkPersonalData.validUpdateData(userDto);
         checkData(userDto);
         Person person = personRepository.findPersonByLogin(userDto.getLogin());
-        BeanUtils.copyProperties(userDto,person,"id");
-        System.out.println(person.getFaculty());
+        if(person.getPermission().equals(Permission.LECTURER));
+            person.setAlbumNumber(null);
+        BeanUtils.copyProperties(userDto, person, "id","albumNumber");
         personRepository.save(person);
         return userDto;
     }

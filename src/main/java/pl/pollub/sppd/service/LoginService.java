@@ -1,22 +1,18 @@
 package pl.pollub.sppd.service;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import pl.pollub.sppd.mail.Mail;
 import pl.pollub.sppd.model.Person;
 import pl.pollub.sppd.model.accountStatus.AccountStatus;
-import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.repository.PersonRepository;
 import pl.pollub.sppd.security.BlockUserDto;
 import pl.pollub.sppd.security.LoginCredentials;
 import pl.pollub.sppd.service.exceptions.AlreadyExistsException;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
-import pl.pollub.sppd.service.exceptions.PermissionException;
-import pl.pollub.sppd.service.user.UserSaveDto;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +23,7 @@ public class LoginService {
 
     private final PersonRepository personRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-
+    private final Mail mail;
 
     public void checkAvailableLogin(String login) throws AlreadyExistsException {
         if (personRepository.findPersonByLogin(login) != null) {
@@ -54,8 +50,12 @@ public class LoginService {
                 .collect(Collectors.toList());
     }
 
-    public BlockUserDto updateBlockUser(BlockUserDto user){
+    @Transactional
+    public BlockUserDto updateBlockUser(BlockUserDto user) throws MessagingException {
         Person person = personRepository.findPersonByLogin(user.getUserName());
+        String token = GenerateToken.randomGenerator(80);
+        mail.sendMail(person.getEmail(), token, person.getLogin());
+        person.setActivateToken(token);
         personRepository.save(BlockUserDto.blockUserDtoToPerson(user,person));
         return user;
     }

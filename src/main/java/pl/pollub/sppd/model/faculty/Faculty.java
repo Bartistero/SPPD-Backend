@@ -1,12 +1,12 @@
 package pl.pollub.sppd.model.faculty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 import pl.pollub.sppd.model.IdModel;
 import pl.pollub.sppd.model.Person;
-import pl.pollub.sppd.model.address.Borough;
+import pl.pollub.sppd.model.ThesisTitle.ThesisTitle;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -27,4 +27,7 @@ public class Faculty extends IdModel {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty", cascade=CascadeType.ALL)
     private Set<Person> person;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty", cascade= CascadeType.ALL)
+    private Set<ThesisTitle> thesisTitle;
 }

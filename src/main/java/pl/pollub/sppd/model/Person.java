@@ -1,8 +1,11 @@
 package pl.pollub.sppd.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.pollub.sppd.model.ThesisTitle.ThesisTitle;
 import pl.pollub.sppd.model.accountStatus.AccountStatus;
 import pl.pollub.sppd.model.accountStatus.AccountStatusConverter;
 import pl.pollub.sppd.model.address.*;
@@ -13,6 +16,7 @@ import pl.pollub.sppd.model.sex.Sex;
 import pl.pollub.sppd.model.sex.SexConverter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,7 +30,10 @@ public class Person extends IdModel {
     private String login;
     private String email;
     private String password;
+
+    @Column(nullable = true)
     private String albumNumber;
+
     private String pesel;
     private String phone;
     private Integer loginAttempts;
@@ -75,4 +82,7 @@ public class Person extends IdModel {
     private String flatNumber;
 
     private String activateToken;
+
+    @ManyToMany(mappedBy = "listOfPersonThesis")
+    private Set<ThesisTitle> thesis;
 }

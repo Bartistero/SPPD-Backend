@@ -1,8 +1,6 @@
 package pl.pollub.sppd.api;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,9 +31,9 @@ public class ThesisController {
         return thesisService.getMyThesis(getLogin());
     }
 
-    @PostMapping("/put")
+    @PostMapping()
     public ThesisSaveDto newThesis(ThesisSaveDto thesisSaveDto){
-
+        thesisService.put(thesisSaveDto, getLogin());
         return thesisSaveDto;
     }
 

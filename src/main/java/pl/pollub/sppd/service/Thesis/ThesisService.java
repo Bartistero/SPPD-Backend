@@ -9,6 +9,7 @@ import pl.pollub.sppd.model.repository.PersonRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 @AllArgsConstructor
 public class ThesisService {
@@ -18,7 +19,6 @@ public class ThesisService {
     public List<ThesisDto> getAllThesis(String login) {
         Person person = personRepository.findPersonByLogin(login);
         Faculty faculty = person.getFaculty();
-        System.out.println(faculty.getThesisTitle().size());
         return faculty.getThesisTitle().stream()
                 .map(ThesisDto::thesisTitleToThesisDto)
                 .collect(Collectors.toList());
@@ -30,5 +30,24 @@ public class ThesisService {
         return person.getThesis().stream()
                 .map(ThesisDto::thesisTitleToThesisDto)
                 .collect(Collectors.toList());
+    }
+
+    public void put(ThesisSaveDto thesisSaveDto, String login) {
+        Person person = personRepository.findPersonByLogin(login);
+        switch (person.getPermission()) {
+            case STUDENT:
+                student(thesisSaveDto);
+                break;
+            case LECTURER:
+                lecturer(thesisSaveDto);
+        }
+    }
+
+    private void student(ThesisSaveDto thesisSaveDto) {
+
+    }
+
+    private void lecturer(ThesisSaveDto thesisSaveDto) {
+
     }
 }

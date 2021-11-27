@@ -20,9 +20,15 @@ public class ThesisService {
         Faculty faculty = person.getFaculty();
         System.out.println(faculty.getThesisTitle().size());
         return faculty.getThesisTitle().stream()
-                .map(ThesisDto::thesisStatusToThesisDto)
+                .map(ThesisDto::thesisTitleToThesisDto)
                 .collect(Collectors.toList());
     }
 
 
+    public List<ThesisDto> getMyThesis(String login) {
+        Person person = personRepository.findPersonByLogin(login);
+        return person.getThesis().stream()
+                .map(ThesisDto::thesisTitleToThesisDto)
+                .collect(Collectors.toList());
+    }
 }

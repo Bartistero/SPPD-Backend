@@ -7,7 +7,8 @@ public enum TypeOfThesis {
 
     ENGINEERING(1L),
     MASTER(2l),
-    DOCTORAL(3L);
+    DOCTORAL(3L),
+    BACHELOR(4L);
 
     private Long number;
 

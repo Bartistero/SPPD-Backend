@@ -19,4 +19,9 @@ public class ThesisDto extends ThesisSaveDto {
         thesisDto.setId(thesisTitle.getId());
         return thesisDto;
     }
+
+    public static ThesisTitle thesisDtoToThesisTitle(ThesisDto thesisDto){
+        ThesisTitle thesisTitle = new ThesisTitle();
+        return thesisSaveDtoToThesisTitle(thesisDto);
+    }
 }

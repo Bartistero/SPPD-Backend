@@ -1,12 +1,21 @@
 package pl.pollub.sppd.service.Thesis;
 
+import com.fasterxml.jackson.databind.cfg.CoercionAction;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.model.Person;
+import pl.pollub.sppd.model.ThesisTitle.ThesisTitle;
 import pl.pollub.sppd.model.faculty.Faculty;
+import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.repository.PersonRepository;
+import pl.pollub.sppd.model.repository.ThesisTitleRepository;
+import pl.pollub.sppd.model.thesisStatus.ThesisStatus;
+import pl.pollub.sppd.service.CheckThesis;
+import pl.pollub.sppd.service.exceptions.GeneralException;
+import pl.pollub.sppd.service.exceptions.NotFoundException;
+import pl.pollub.sppd.service.exceptions.PermissionException;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -14,7 +23,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ThesisService {
 
-    PersonRepository personRepository;
+    private final PersonRepository personRepository;
+    private final CheckThesis checkThesis;
+    private final ThesisTitleRepository thesisRepository;
 
     public List<ThesisDto> getAllThesis(String login) {
         Person person = personRepository.findPersonByLogin(login);
@@ -32,22 +43,29 @@ public class ThesisService {
                 .collect(Collectors.toList());
     }
 
-    public void put(ThesisSaveDto thesisSaveDto, String login) {
+    public void put(ThesisSaveDto thesisSaveDto, String login) throws PermissionException, GeneralException {
         Person person = personRepository.findPersonByLogin(login);
-        switch (person.getPermission()) {
-            case STUDENT:
-                student(thesisSaveDto);
-                break;
-            case LECTURER:
-                lecturer(thesisSaveDto);
+        if (!checkThesis.checkStatusThesis(thesisSaveDto.getThesisStatus(), person.getPermission())) {
+            throw new PermissionException("User can not make this action!");
         }
+        checkThesis.validateNewThesis(thesisSaveDto);
+        ThesisTitle thesisTitle = ThesisSaveDto.thesisSaveDtoToThesisTitle(thesisSaveDto);
+        thesisTitle.setFaculty(person.getFaculty());
+        Set<Person> personList = new HashSet<>();
+        personList.add(person);
+        thesisTitle.setListOfPersonThesis(personList);
+        thesisRepository.save(thesisTitle);
     }
 
-    private void student(ThesisSaveDto thesisSaveDto) {
-
-    }
-
-    private void lecturer(ThesisSaveDto thesisSaveDto) {
-
+    public void update(ThesisDto thesisDto, String login) throws PermissionException, NotFoundException, GeneralException {
+        Person person = personRepository.findPersonByLogin(login);
+        Optional<ThesisTitle> thesisTitleOptional = thesisRepository.findById(thesisDto.getId());
+        if(thesisTitleOptional.isEmpty())
+            throw new NotFoundException("Thesis with id: " + thesisDto.getId() + " not found!");
+        ThesisTitle thesisTitle = thesisTitleOptional.get();
+        checkThesis.checkUpdateThesis(thesisDto,person,thesisTitle);
+        thesisTitle.getListOfPersonThesis().add(person);
+        thesisTitle.setThesisStatus(thesisDto.getThesisStatus());
+        thesisRepository.save(thesisTitle);
     }
 }

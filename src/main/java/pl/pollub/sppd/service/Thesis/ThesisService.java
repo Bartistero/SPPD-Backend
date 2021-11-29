@@ -25,10 +25,10 @@ public class ThesisService {
     }
 
 
-    public List<ThesisDto> getMyThesis(String login) {
+    public List<ThesisDetailsDto> getMyThesis(String login) {
         Person person = personRepository.findPersonByLogin(login);
         return person.getThesis().stream()
-                .map(ThesisDto::thesisTitleToThesisDto)
+                .map(ThesisDetailsDto::thesisTitleToThesisDetailsDto)
                 .collect(Collectors.toList());
     }
 

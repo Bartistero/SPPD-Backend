@@ -3,6 +3,9 @@ package pl.pollub.sppd.service.Thesis;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.pollub.sppd.model.Person;
+import pl.pollub.sppd.model.ThesisTitle.ThesisTitle;
+import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.thesisStatus.ThesisStatus;
 import pl.pollub.sppd.model.typeOfThesis.TypeOfThesis;
 import pl.pollub.sppd.service.user.LecturerDto;
@@ -21,16 +24,16 @@ public class ThesisSaveDto {
     private LecturerDto lecturer;
     private Integer amountPeople;
 
-    /*public static ThesisTitle thesisSaveDtoToThesisTitle(ThesisSaveDto thesisSaveDto) {
-        ThesisTitle thesisTitle = new ThesisTitle();
-        thesisTitle.setThesisName(thesisSaveDto.getThesisName());
-        thesisTitle.setDescription(thesisSaveDto.getDescription());
-        thesisTitle.setTypeOfThesis(thesisSaveDto.getTypeOfThesis());
-        thesisTitle.setYear(YearDto.yearDtoToYear(thesisSaveDto.year));
-        thesisTitle.setThesisStatus(thesisSaveDto.getThesisStatus());
-        //thesisTitle.getListOfPersonThesis().add(LecturerDto.LecturerDtoToUserDto(thesisSaveDto.getLecturer()));
-        thesisSaveDto.setLecturer();
-        thesisTitle.setAmountPeople(thesisSaveDto.getAmountPeople());
-        return thesisTitle;
-    }*/
+    protected static void thesisTitleToThesisSaveDto(ThesisTitle thesisTitle, ThesisSaveDto thesisDto){
+        Person person = thesisTitle.getListOfPersonThesis().stream()
+                .filter( p -> p.getPermission().equals(Permission.LECTURER))
+                .findFirst().orElseThrow(IllegalArgumentException::new);
+        thesisDto.setThesisName(thesisTitle.getThesisName());
+        thesisDto.setDescription(thesisTitle.getDescription());
+        thesisDto.setTypeOfThesis(thesisTitle.getTypeOfThesis());
+        thesisDto.setYear(YearDto.yearToYearDto(thesisTitle.getYear()));
+        thesisDto.setThesisStatus(thesisTitle.getThesisStatus());
+        thesisDto.setLecturer(LecturerDto.LecturerDtoToUserDto(person));
+        thesisDto.setAmountPeople(thesisTitle.getAmountPeople());
+    }
 }

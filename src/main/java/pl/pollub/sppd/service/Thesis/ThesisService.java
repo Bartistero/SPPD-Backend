@@ -9,7 +9,6 @@ import pl.pollub.sppd.model.faculty.Faculty;
 import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.repository.PersonRepository;
 import pl.pollub.sppd.model.repository.ThesisTitleRepository;
-import pl.pollub.sppd.model.thesisStatus.ThesisStatus;
 import pl.pollub.sppd.service.CheckThesis;
 import pl.pollub.sppd.service.exceptions.GeneralException;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
@@ -53,6 +52,10 @@ public class ThesisService {
         thesisTitle.setFaculty(person.getFaculty());
         Set<Person> personList = new HashSet<>();
         personList.add(person);
+        if(person.getPermission().equals(Permission.STUDENT)){
+            personList.add(personRepository.findById(thesisSaveDto.getLecturer().getId())
+                    .orElseThrow(() -> new GeneralException("Lecturer not found!")));
+        }
         thesisTitle.setListOfPersonThesis(personList);
         thesisRepository.save(thesisTitle);
     }

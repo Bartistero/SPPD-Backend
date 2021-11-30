@@ -8,10 +8,8 @@ import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.repository.PersonRepository;
 import pl.pollub.sppd.model.repository.YearRepository;
 import pl.pollub.sppd.model.thesisStatus.ThesisStatus;
-import pl.pollub.sppd.service.Thesis.ThesisDto;
 import pl.pollub.sppd.service.Thesis.ThesisSaveDto;
 import pl.pollub.sppd.service.exceptions.GeneralException;
-import pl.pollub.sppd.service.exceptions.PermissionException;
 
 import java.util.ArrayList;
 import java.util.List;

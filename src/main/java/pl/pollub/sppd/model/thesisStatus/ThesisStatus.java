@@ -10,7 +10,8 @@ public enum ThesisStatus {
     ADDED_LECTURER(3L),
     RESERVED_STUDENT(4L),
     ACCEPTED_FACULTY(5l),
-    ARCHIVED(6L);
+    ARCHIVED(6L),
+    REJECTED(7L);
 
     private Long number;
 

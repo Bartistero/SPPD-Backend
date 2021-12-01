@@ -3,7 +3,6 @@ package pl.pollub.sppd.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import pl.pollub.sppd.model.ThesisTitle.ThesisTitle;
 import pl.pollub.sppd.service.Thesis.ThesisDetailsDto;
 import pl.pollub.sppd.service.Thesis.ThesisDto;
 import pl.pollub.sppd.service.Thesis.ThesisSaveDto;
@@ -11,6 +10,7 @@ import pl.pollub.sppd.service.Thesis.ThesisService;
 import pl.pollub.sppd.service.exceptions.GeneralException;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
 import pl.pollub.sppd.service.exceptions.PermissionException;
+import pl.pollub.sppd.service.user.LecturerDto;
 
 import java.util.List;
 
@@ -43,6 +43,11 @@ public class ThesisController {
     public ThesisDto updateThesis(@RequestBody ThesisDto thesisDto) throws PermissionException, NotFoundException, GeneralException {
         thesisService.update(thesisDto, getLogin());
         return thesisDto;
+    }
+
+    @PostMapping("/new-collaborators")
+    public LecturerDto addUser(@RequestBody LecturerDto lecturerDto, @RequestParam Long idThesis) throws NotFoundException, GeneralException {
+       return thesisService.addNewCollaborators(lecturerDto, idThesis);
     }
 
     private String getLogin() {

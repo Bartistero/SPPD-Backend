@@ -13,6 +13,7 @@ import pl.pollub.sppd.service.CheckThesis;
 import pl.pollub.sppd.service.exceptions.GeneralException;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
 import pl.pollub.sppd.service.exceptions.PermissionException;
+import pl.pollub.sppd.service.user.LecturerDto;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -70,5 +71,23 @@ public class ThesisService {
         thesisTitle.getListOfPersonThesis().add(person);
         thesisTitle.setThesisStatus(thesisDto.getThesisStatus());
         thesisRepository.save(thesisTitle);
+    }
+
+    public LecturerDto addNewCollaborators(LecturerDto lecturerDto, Long idThesis) throws NotFoundException, GeneralException {
+        ThesisTitle thesisTitle = thesisRepository.findById(idThesis).orElseThrow(
+                () -> new NotFoundException("Theis with id: " + idThesis + "not found!")
+        );
+        for (Person p :thesisTitle.getListOfPersonThesis()
+             ) {
+            if (p.getId().equals(lecturerDto.getId())) {
+                throw new GeneralException("the user has been taken down to this thesis");
+            }
+        }
+        Person person = personRepository.findById(lecturerDto.getId()).orElseThrow(
+                () -> new NotFoundException("Theis with id: " + idThesis + "not found!")
+        );
+        thesisTitle.getListOfPersonThesis().add(person);
+        thesisRepository.save(thesisTitle);
+        return lecturerDto;
     }
 }

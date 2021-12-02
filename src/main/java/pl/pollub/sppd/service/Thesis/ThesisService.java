@@ -1,6 +1,5 @@
 package pl.pollub.sppd.service.Thesis;
 
-import com.fasterxml.jackson.databind.cfg.CoercionAction;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.mail.Mail;
@@ -32,19 +31,35 @@ public class ThesisService {
     private final ThesisTitleRepository thesisRepository;
     private final Mail mail;
 
-    public List<ThesisDto> getAllThesis(String login) {
+    public List<ThesisDto> getAllThesis(String login, ThesisStatus thesisStatus) {
         Person person = personRepository.findPersonByLogin(login);
         Faculty faculty = person.getFaculty();
-        return faculty.getThesisTitle().stream()
-                .map( p -> {
-                   Long quantity =  p.getListOfPersonThesis().stream()
-                           .filter(f -> f.getPermission().equals(Permission.STUDENT))
-                           .count();
-                    return ThesisDto.thesisTitleToThesisDto(p,quantity);
-                })
-                .collect(Collectors.toList());
+        if (thesisStatus.equals(ThesisStatus.ACCEPTED_FACULTY)) {
+            return faculty.getThesisTitle().stream()
+                    .filter(f -> f.getThesisStatus().equals(ThesisStatus.ACCEPTED_FACULTY))
+                    .map(p -> {
+                        Long quantity = p.getListOfPersonThesis().stream()
+                                .filter(f -> f.getPermission().equals(Permission.STUDENT))
+                                .count();
+                        return ThesisDto.thesisTitleToThesisDto(p, quantity);
+                    })
+                    .collect(Collectors.toList());
+        } else {
+            return faculty.getThesisTitle().stream()
+                    .filter(f -> f.getThesisStatus().equals(ThesisStatus.ADDED_LECTURER)
+                           || f.getThesisStatus().equals(ThesisStatus.ACCEPTED_LECTURER))
+                    .filter(f -> f.getListOfPersonThesis()
+                            .stream()
+                            .noneMatch(even -> even.getLogin().equals(person.getLogin())))
+                    .map(p -> {
+                        Long quantity = p.getListOfPersonThesis().stream()
+                                .filter(f -> f.getPermission().equals(Permission.STUDENT))
+                                .count();
+                        return ThesisDto.thesisTitleToThesisDto(p, quantity);
+                    })
+                    .collect(Collectors.toList());
+        }
     }
-
 
     public List<ThesisDetailsDto> getMyThesis(String login) {
         Person person = personRepository.findPersonByLogin(login);
@@ -63,7 +78,7 @@ public class ThesisService {
         thesisTitle.setFaculty(person.getFaculty());
         Set<Person> personList = new HashSet<>();
         personList.add(person);
-        if(person.getPermission().equals(Permission.STUDENT)){
+        if (person.getPermission().equals(Permission.STUDENT)) {
             personList.add(personRepository.findById(thesisSaveDto.getLecturer().getId())
                     .orElseThrow(() -> new GeneralException("Lecturer not found!")));
         }
@@ -72,23 +87,24 @@ public class ThesisService {
     }
 
     @Transactional
-    public void update(ThesisDto thesisDto, String login) throws PermissionException, NotFoundException, GeneralException, MessagingException {
+    public void update(ThesisDto thesisDto, String login) throws NotFoundException, GeneralException, MessagingException {
         Person person = personRepository.findPersonByLogin(login);
         Optional<ThesisTitle> thesisTitleOptional = thesisRepository.findById(thesisDto.getId());
-        if(thesisTitleOptional.isEmpty())
+        if (thesisTitleOptional.isEmpty())
             throw new NotFoundException("Thesis with id: " + thesisDto.getId() + " not found!");
         ThesisTitle thesisTitle = thesisTitleOptional.get();
-        if(person.getPermission().equals(Permission.LECTURER) && thesisDto.getThesisStatus().equals(ThesisStatus.REJECTED)){
+        if ((person.getPermission().equals(Permission.LECTURER) || person.getPermission().equals(Permission.ADMIN))
+                && thesisDto.getThesisStatus().equals(ThesisStatus.REJECTED)) {
             for (Iterator<Person> it = thesisTitle.getListOfPersonThesis().iterator();
                  it.hasNext(); ) {
                 Person f = it.next();
-                if (f.getPermission().equals(Permission.STUDENT))
-                    mail.sendRejectMail(f.getEmail(),f.getLogin());
+                if (f.getPermission().equals(Permission.STUDENT) || f.getPermission().equals(Permission.LECTURER) )
+                    mail.sendRejectMail(f.getEmail(), f.getLogin());
             }
-           thesisRepository.delete(thesisTitle);
+            thesisRepository.delete(thesisTitle);
             return;
         }
-        checkThesis.checkUpdateThesis(thesisDto,person,thesisTitle);
+        checkThesis.checkUpdateThesis(thesisDto, person, thesisTitle);
         thesisTitle.getListOfPersonThesis().add(person);
         thesisTitle.setThesisStatus(thesisDto.getThesisStatus());
         thesisRepository.save(thesisTitle);
@@ -98,8 +114,8 @@ public class ThesisService {
         ThesisTitle thesisTitle = thesisRepository.findById(idThesis).orElseThrow(
                 () -> new NotFoundException("Theis with id: " + idThesis + "not found!")
         );
-        for (Person p :thesisTitle.getListOfPersonThesis()
-             ) {
+        for (Person p : thesisTitle.getListOfPersonThesis()
+        ) {
             if (p.getId().equals(lecturerDto.getId())) {
                 throw new GeneralException("the user has been taken down to this thesis");
             }

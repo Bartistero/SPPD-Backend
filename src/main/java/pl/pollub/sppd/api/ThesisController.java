@@ -3,6 +3,7 @@ package pl.pollub.sppd.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import pl.pollub.sppd.model.thesisStatus.ThesisStatus;
 import pl.pollub.sppd.service.Thesis.ThesisDetailsDto;
 import pl.pollub.sppd.service.Thesis.ThesisDto;
 import pl.pollub.sppd.service.Thesis.ThesisSaveDto;
@@ -25,8 +26,8 @@ public class ThesisController {
 
     //Zwraca wszystkie dostępne prace na danym wypdziale!
     @GetMapping()
-    public List<ThesisDto> getAllThesis() {
-        return thesisService.getAllThesis(getLogin());
+    public List<ThesisDto> getAllThesis(@RequestParam ThesisStatus thesisStatus) {
+        return thesisService.getAllThesis(getLogin(), thesisStatus);
     }
 
     @GetMapping("/my-thesis")

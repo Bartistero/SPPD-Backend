@@ -47,8 +47,8 @@ public class Mail {
 
     private String rejectTemplate(String username){
         return "<h4 style=\"text-align:center;\"> Odrzucenie pracy</h4>"
-                + "Szanowny Studencie! <br> Zaproponowana przez Ciebie praca została odrzucona przez promotora,"
-                + " w celu uzyskania szczegółów, skontaktuj sie z promotorem"
+                + "Szanowni Państwo! <br> Zaproponowana przez Państwa praca została odrzucona,"
+                + " w celu uzyskania szczegółów, skontaktuj sie z promotorem lub administratorem."
                 + "<br style=\"text-align:center;\">Ta wiadomoścć została wygenerowana automatycznie, prosimy na nią nie odpowiadać.";
     }
 }

@@ -3,18 +3,22 @@ package pl.pollub.sppd.service.Thesis;
 import com.fasterxml.jackson.databind.cfg.CoercionAction;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.pollub.sppd.mail.Mail;
 import pl.pollub.sppd.model.Person;
 import pl.pollub.sppd.model.ThesisTitle.ThesisTitle;
 import pl.pollub.sppd.model.faculty.Faculty;
 import pl.pollub.sppd.model.permission.Permission;
 import pl.pollub.sppd.model.repository.PersonRepository;
 import pl.pollub.sppd.model.repository.ThesisTitleRepository;
+import pl.pollub.sppd.model.thesisStatus.ThesisStatus;
 import pl.pollub.sppd.service.CheckThesis;
 import pl.pollub.sppd.service.exceptions.GeneralException;
 import pl.pollub.sppd.service.exceptions.NotFoundException;
 import pl.pollub.sppd.service.exceptions.PermissionException;
 import pl.pollub.sppd.service.user.LecturerDto;
 
+import javax.mail.MessagingException;
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,12 +30,18 @@ public class ThesisService {
     private final PersonRepository personRepository;
     private final CheckThesis checkThesis;
     private final ThesisTitleRepository thesisRepository;
+    private final Mail mail;
 
     public List<ThesisDto> getAllThesis(String login) {
         Person person = personRepository.findPersonByLogin(login);
         Faculty faculty = person.getFaculty();
         return faculty.getThesisTitle().stream()
-                .map(ThesisDto::thesisTitleToThesisDto)
+                .map( p -> {
+                   Long quantity =  p.getListOfPersonThesis().stream()
+                           .filter(f -> f.getPermission().equals(Permission.STUDENT))
+                           .count();
+                    return ThesisDto.thesisTitleToThesisDto(p,quantity);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -61,12 +71,23 @@ public class ThesisService {
         thesisRepository.save(thesisTitle);
     }
 
-    public void update(ThesisDto thesisDto, String login) throws PermissionException, NotFoundException, GeneralException {
+    @Transactional
+    public void update(ThesisDto thesisDto, String login) throws PermissionException, NotFoundException, GeneralException, MessagingException {
         Person person = personRepository.findPersonByLogin(login);
         Optional<ThesisTitle> thesisTitleOptional = thesisRepository.findById(thesisDto.getId());
         if(thesisTitleOptional.isEmpty())
             throw new NotFoundException("Thesis with id: " + thesisDto.getId() + " not found!");
         ThesisTitle thesisTitle = thesisTitleOptional.get();
+        if(person.getPermission().equals(Permission.LECTURER) && thesisDto.getThesisStatus().equals(ThesisStatus.REJECTED)){
+            for (Iterator<Person> it = thesisTitle.getListOfPersonThesis().iterator();
+                 it.hasNext(); ) {
+                Person f = it.next();
+                if (f.getPermission().equals(Permission.STUDENT))
+                    mail.sendRejectMail(f.getEmail(),f.getLogin());
+            }
+           thesisRepository.delete(thesisTitle);
+            return;
+        }
         checkThesis.checkUpdateThesis(thesisDto,person,thesisTitle);
         thesisTitle.getListOfPersonThesis().add(person);
         thesisTitle.setThesisStatus(thesisDto.getThesisStatus());

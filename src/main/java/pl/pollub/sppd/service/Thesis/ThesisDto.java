@@ -12,11 +12,13 @@ import pl.pollub.sppd.model.ThesisTitle.ThesisTitle;
 public class ThesisDto extends ThesisSaveDto {
 
     Long id;
+    Long reservation;
 
-    public static ThesisDto thesisTitleToThesisDto(ThesisTitle thesisTitle) {
+    public static ThesisDto thesisTitleToThesisDto(ThesisTitle thesisTitle, Long quantity) {
         ThesisDto thesisDto = new ThesisDto();
         thesisTitleToThesisSaveDto(thesisTitle, thesisDto);
         thesisDto.setId(thesisTitle.getId());
+        thesisDto.setReservation(quantity);
         return thesisDto;
     }
 

@@ -48,7 +48,7 @@ public class ThesisTitle extends IdModel {
     @JoinColumn(name = "idFaculty", nullable = false)
     Faculty faculty;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.DETACH})
     @JoinTable(name = "Person_has_ThesisTitle",
             joinColumns = {@JoinColumn(name = "idThesisTitle")},
             inverseJoinColumns = {@JoinColumn(name = "idPerson")})

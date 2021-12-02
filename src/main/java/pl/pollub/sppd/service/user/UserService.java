@@ -46,7 +46,7 @@ public class UserService {
         userSaveDto.setActiveToken(token);
         Faculty faculty = personRepository.findPersonByLogin(login).getFaculty();
         personRepository.save(UserSaveDto.userSaveDtoToPerson(userSaveDto, faculty));
-        mail.sendMail(userSaveDto.getEmail(), token, userSaveDto.getLogin());
+        mail.sendMailActivate(userSaveDto.getEmail(), token, userSaveDto.getLogin());
         return userSaveDto;
     }
 

@@ -12,6 +12,7 @@ import pl.pollub.sppd.service.exceptions.NotFoundException;
 import pl.pollub.sppd.service.exceptions.PermissionException;
 import pl.pollub.sppd.service.user.LecturerDto;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -40,7 +41,7 @@ public class ThesisController {
     }
 
     @PostMapping("/update")
-    public ThesisDto updateThesis(@RequestBody ThesisDto thesisDto) throws PermissionException, NotFoundException, GeneralException {
+    public ThesisDto updateThesis(@RequestBody ThesisDto thesisDto) throws PermissionException, NotFoundException, GeneralException, MessagingException {
         thesisService.update(thesisDto, getLogin());
         return thesisDto;
     }

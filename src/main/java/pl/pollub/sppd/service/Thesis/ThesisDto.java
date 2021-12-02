@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import pl.pollub.sppd.model.ThesisTitle.ThesisTitle;
+import pl.pollub.sppd.service.degreeCourse.DegreeCourseDto;
 
 @Getter
 @Setter

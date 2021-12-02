@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 import pl.pollub.sppd.model.IdModel;
 import pl.pollub.sppd.model.Person;
+import pl.pollub.sppd.model.faculty.DegreeCourse;
 import pl.pollub.sppd.model.faculty.Faculty;
 import pl.pollub.sppd.model.thesisStatus.ThesisStatus;
 import pl.pollub.sppd.model.thesisStatus.ThesisStatusConverter;
@@ -47,6 +48,10 @@ public class ThesisTitle extends IdModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idFaculty", nullable = false)
     Faculty faculty;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idDegreeCourse", nullable = false)
+    DegreeCourse degreeCourse;
 
     @ManyToMany(cascade = {CascadeType.DETACH})
     @JoinTable(name = "Person_has_ThesisTitle",

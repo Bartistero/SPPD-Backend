@@ -19,6 +19,7 @@ public class ThesisDetailsDto extends ThesisSaveDto {
     private Long id;
     private List<LecturerDto> collaborator;
 
+
     public static ThesisDetailsDto thesisTitleToThesisDetailsDto(ThesisTitle thesisTitle) {
         ThesisDetailsDto thesisDto = new ThesisDetailsDto();
         thesisTitleToThesisSaveDto(thesisTitle, thesisDto);

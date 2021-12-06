@@ -12,7 +12,7 @@ import pl.pollub.sppd.service.faculty.FacultyDto;
 @NoArgsConstructor
 public class AdminDto extends PersonAbstractDto {
         
-   private Long id;
+    private Long id;
     private FacultyDto facultyDto;
 
     public static Person adminDtoToPerson(AdminDto adminDto){

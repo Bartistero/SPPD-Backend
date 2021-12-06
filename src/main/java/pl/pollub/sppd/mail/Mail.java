@@ -49,6 +49,6 @@ public class Mail {
         return "<h4 style=\"text-align:center;\"> Odrzucenie pracy</h4>"
                 + "Szanowni Państwo! <br> Zaproponowana przez Państwa praca została odrzucona,"
                 + " w celu uzyskania szczegółów, skontaktuj sie z promotorem lub administratorem."
-                + "<br style=\"text-align:center;\">Ta wiadomoścć została wygenerowana automatycznie, prosimy na nią nie odpowiadać.";
+                + "<br style=\"text-align:center;\">Ta wiadomość została wygenerowana automatycznie, prosimy na nią nie odpowiadać.";
     }
 }

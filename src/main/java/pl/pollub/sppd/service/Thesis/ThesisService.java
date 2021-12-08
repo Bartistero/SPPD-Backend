@@ -44,13 +44,23 @@ public class ThesisService {
                         return ThesisDto.thesisTitleToThesisDto(p, quantity);
                     })
                     .collect(Collectors.toList());
-        } else {
+        } else if(thesisStatus.equals(ThesisStatus.ADDED_LECTURER) || thesisStatus.equals(ThesisStatus.ACCEPTED_LECTURER)){
             return faculty.getThesisTitle().stream()
                     .filter(f -> f.getThesisStatus().equals(ThesisStatus.ADDED_LECTURER)
                            || f.getThesisStatus().equals(ThesisStatus.ACCEPTED_LECTURER))
                     .filter(f -> f.getListOfPersonThesis()
                             .stream()
                             .noneMatch(even -> even.getLogin().equals(person.getLogin())))
+                    .map(p -> {
+                        Long quantity = p.getListOfPersonThesis().stream()
+                                .filter(f -> f.getPermission().equals(Permission.STUDENT))
+                                .count();
+                        return ThesisDto.thesisTitleToThesisDto(p, quantity);
+                    })
+                    .collect(Collectors.toList());
+        } else {
+            return faculty.getThesisTitle().stream()
+                    .filter(f -> f.getThesisStatus().equals(ThesisStatus.ARCHIVED))
                     .map(p -> {
                         Long quantity = p.getListOfPersonThesis().stream()
                                 .filter(f -> f.getPermission().equals(Permission.STUDENT))

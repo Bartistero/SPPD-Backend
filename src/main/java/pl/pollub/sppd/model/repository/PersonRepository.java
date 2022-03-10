@@ -34,4 +34,6 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     @Query("select o from Person o where o.accountStatus=:accountStatus")
     List<Person> findBlockPerson(AccountStatus accountStatus);
+
+    Long countByPermission(Permission permission);
 }

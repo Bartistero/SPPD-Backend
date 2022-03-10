@@ -1,7 +1,6 @@
 package pl.pollub.sppd.service.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.pollub.sppd.mail.Mail;
 import pl.pollub.sppd.model.Person;
@@ -44,7 +43,7 @@ public class AdminService {
         String token = GenerateToken.randomGenerator(80);
         adminSaveDto.setActiveToken(token);
         personRepository.save(AdminSaveDto.adminDtoToPerson(adminSaveDto));
-        mail.sendMail(adminSaveDto.getEmail(), token, adminSaveDto.getLogin());
+        mail.sendMailActivate(adminSaveDto.getEmail(), token, adminSaveDto.getLogin());
         return adminSaveDto;
     }
 

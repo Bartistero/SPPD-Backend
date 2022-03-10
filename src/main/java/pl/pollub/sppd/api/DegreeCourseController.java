@@ -24,7 +24,7 @@ public class DegreeCourseController {
 
     @GetMapping
     public List<DegreeCourseDto> get() throws PermissionException {
-        checkPermission();
+      //  checkPermission();
         return degreeCourseService.get(getLogin());
     }
 

@@ -3,6 +3,7 @@ package pl.pollub.sppd.service.exceptions;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 @Getter
 public class GeneralException extends Exception {

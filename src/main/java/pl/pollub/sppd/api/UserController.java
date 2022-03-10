@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping
     public List<UserDto> get(Permission permission) throws PermissionException {
-        checkPermission();
+      //  checkPermission();
         return userService.get(permission, getLogin());
     }
 

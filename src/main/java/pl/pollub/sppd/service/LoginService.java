@@ -54,7 +54,7 @@ public class LoginService {
     public BlockUserDto updateBlockUser(BlockUserDto user) throws MessagingException {
         Person person = personRepository.findPersonByLogin(user.getUserName());
         String token = GenerateToken.randomGenerator(80);
-        mail.sendMail(person.getEmail(), token, person.getLogin());
+        mail.sendMailActivate(person.getEmail(), token, person.getLogin());
         person.setActivateToken(token);
         personRepository.save(BlockUserDto.blockUserDtoToPerson(user,person));
         return user;
